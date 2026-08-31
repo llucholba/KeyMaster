@@ -7,7 +7,6 @@ namespace KeyMaster.Core
     public static class KeySender
     {
         private const uint INPUT_KEYBOARD = 1;
-
         private const uint KEYEVENTF_KEYUP = 0x0002;
 
         [StructLayout(LayoutKind.Sequential)]
@@ -21,7 +20,24 @@ namespace KeyMaster.Core
         private struct InputUnion
         {
             [FieldOffset(0)]
+            public MOUSEINPUT mi;
+
+            [FieldOffset(0)]
             public KEYBDINPUT ki;
+
+            [FieldOffset(0)]
+            public HARDWAREINPUT hi;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct MOUSEINPUT
+        {
+            public int dx;
+            public int dy;
+            public uint mouseData;
+            public uint dwFlags;
+            public uint time;
+            public UIntPtr dwExtraInfo;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -31,16 +47,26 @@ namespace KeyMaster.Core
             public ushort wScan;
             public uint dwFlags;
             public uint time;
-            public IntPtr dwExtraInfo;
+            public UIntPtr dwExtraInfo;
         }
 
-        [DllImport("user32.dll", SetLastError = true)]
+        [StructLayout(LayoutKind.Sequential)]
+        private struct HARDWAREINPUT
+        {
+            public uint uMsg;
+            public ushort wParamL;
+            public ushort wParamH;
+        }
+
+        [DllImport(
+            "user32.dll",
+            SetLastError = true)]
         private static extern uint SendInput(
             uint nInputs,
             INPUT[] pInputs,
             int cbSize);
 
-        public static void SendKey(Keys key)
+        public static bool SendKey(Keys key)
         {
             ushort virtualKey = (ushort)key;
 
@@ -49,6 +75,7 @@ namespace KeyMaster.Core
                 new INPUT
                 {
                     type = INPUT_KEYBOARD,
+
                     U = new InputUnion
                     {
                         ki = new KEYBDINPUT
@@ -57,7 +84,7 @@ namespace KeyMaster.Core
                             wScan = 0,
                             dwFlags = 0,
                             time = 0,
-                            dwExtraInfo = IntPtr.Zero
+                            dwExtraInfo = UIntPtr.Zero
                         }
                     }
                 },
@@ -65,6 +92,7 @@ namespace KeyMaster.Core
                 new INPUT
                 {
                     type = INPUT_KEYBOARD,
+
                     U = new InputUnion
                     {
                         ki = new KEYBDINPUT
@@ -73,16 +101,25 @@ namespace KeyMaster.Core
                             wScan = 0,
                             dwFlags = KEYEVENTF_KEYUP,
                             time = 0,
-                            dwExtraInfo = IntPtr.Zero
+                            dwExtraInfo = UIntPtr.Zero
                         }
                     }
                 }
             };
 
-            SendInput(
+            uint result = SendInput(
                 (uint)inputs.Length,
                 inputs,
                 Marshal.SizeOf(typeof(INPUT)));
+
+            if (result != inputs.Length)
+            {
+                int error = Marshal.GetLastWin32Error();
+
+                throw new System.ComponentModel.Win32Exception(error);
+            }
+
+            return true;
         }
     }
 }

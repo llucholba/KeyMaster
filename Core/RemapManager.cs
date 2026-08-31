@@ -14,25 +14,42 @@ namespace KeyMaster.Core
             _rules = new List<RemapRule>();
         }
 
-        public IReadOnlyList<RemapRule> Rules => _rules;
-
-        public void AddRule(Keys source, Keys target)
+        public IReadOnlyList<RemapRule> Rules
         {
+            get { return _rules.AsReadOnly(); }
+        }
+
+        public bool AddRule(Keys source, Keys target)
+        {
+            if (source == Keys.None || target == Keys.None)
+                return false;
+
+            // Evitamos F1 -> F1
+            if (source == target)
+                return false;
+
+            // Si ya existe un remapeo para esa tecla,
+            // lo reemplazamos.
             RemoveRule(source);
 
             _rules.Add(
                 new RemapRule(source, target));
+
+            return true;
         }
 
-        public void RemoveRule(Keys source)
+        public bool RemoveRule(Keys source)
         {
             RemapRule existingRule =
-                _rules.FirstOrDefault(x => x.Source == source);
+                _rules.FirstOrDefault(
+                    x => x.Source == source);
 
-            if (existingRule != null)
-            {
-                _rules.Remove(existingRule);
-            }
+            if (existingRule == null)
+                return false;
+
+            _rules.Remove(existingRule);
+
+            return true;
         }
 
         public bool TryGetTarget(

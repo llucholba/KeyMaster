@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\KeyboardHook.cs" />
+    <Compile Include="Core\KeyCatalog.cs" />
     <Compile Include="Core\KeySender.cs" />
     <Compile Include="Core\RemapManager.cs" />
     <Compile Include="Forms\MainForm.cs">
@@ -55,6 +56,7 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\KeyDefinition.cs" />
     <Compile Include="Models\RemapRule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
