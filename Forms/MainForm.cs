@@ -28,6 +28,24 @@ namespace KeyMaster
             _keyboardHook.ShouldSuppressKey += ShouldSuppressKey;
         }
 
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            keyCaptureSource.KeyCaptured += KeyCaptureSource_KeyCaptured;
+            keyCaptureTarget.KeyCaptured += KeyCaptureTarget_KeyCaptured;
+        }
+        private void KeyCaptureSource_KeyCaptured(object sender, EventArgs e)
+        {
+            Keys key = keyCaptureSource.SelectedKey;
+
+            System.Diagnostics.Debug.WriteLine("Source: " + key);
+        }
+        private void KeyCaptureTarget_KeyCaptured(object sender, EventArgs e)
+        {
+            Keys key = keyCaptureTarget.SelectedKey;
+
+            System.Diagnostics.Debug.WriteLine("Target: " + key);
+        }
+
         private void btnStart_Click(object sender, EventArgs e)
         {
             try
@@ -112,17 +130,20 @@ namespace KeyMaster
 
         private void btnAddRemap_Click(object sender, EventArgs e)
         {
-            if (cmbSource.SelectedItem == null ||
-        cmbTarget.SelectedItem == null)
+            Keys source = keyCaptureSource.SelectedKey;
+            Keys target = keyCaptureTarget.SelectedKey;
+
+            if (source == Keys.None ||
+                target == Keys.None)
             {
+                MessageBox.Show(
+                    "Debés seleccionar la tecla original y la tecla de reemplazo.",
+                    "Remapeo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
                 return;
             }
-
-            KeyDefinition sourceDefinition = (KeyDefinition)cmbSource.SelectedItem;
-            KeyDefinition targetDefinition = (KeyDefinition)cmbTarget.SelectedItem;
-
-            Keys source = sourceDefinition.Key;
-            Keys target = targetDefinition.Key;
 
             bool added =
                 _remapManager.AddRule(
@@ -141,6 +162,9 @@ namespace KeyMaster
             }
 
             RefreshRemapList();
+
+            keyCaptureSource.Clear();
+            keyCaptureTarget.Clear();
         }
         private void RefreshRemapList()
         {
@@ -172,13 +196,6 @@ namespace KeyMaster
             _keyboardHook?.Dispose();
 
             base.OnFormClosed(e);
-        }
-
-        private void btnTestKey_Click(object sender, EventArgs e)
-        {
-            bool result = KeySender.SendKey(Keys.X);
-
-            MessageBox.Show("Resultado: " + result);
         }
     }
 }

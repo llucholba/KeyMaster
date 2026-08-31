@@ -39,7 +39,8 @@
             this.btnAddRemap = new System.Windows.Forms.Button();
             this.lstRemaps = new System.Windows.Forms.ListBox();
             this.btnRemoveRemap = new System.Windows.Forms.Button();
-            this.btnTestKey = new System.Windows.Forms.Button();
+            this.keyCaptureTarget = new KeyMaster.Controls.KeyCaptureControl();
+            this.keyCaptureSource = new KeyMaster.Controls.KeyCaptureControl();
             this.SuspendLayout();
             // 
             // lblStatus
@@ -95,38 +96,40 @@
             this.lblSource.AutoSize = true;
             this.lblSource.Location = new System.Drawing.Point(12, 250);
             this.lblSource.Name = "lblSource";
-            this.lblSource.Size = new System.Drawing.Size(94, 16);
+            this.lblSource.Size = new System.Drawing.Size(105, 16);
             this.lblSource.TabIndex = 4;
-            this.lblSource.Text = "Tecla Original:";
+            this.lblSource.Text = "Tecla Deseada:";
             this.lblSource.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // cmbSource
             // 
             this.cmbSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSource.FormattingEnabled = true;
-            this.cmbSource.Location = new System.Drawing.Point(125, 247);
+            this.cmbSource.Location = new System.Drawing.Point(123, 217);
             this.cmbSource.Name = "cmbSource";
             this.cmbSource.Size = new System.Drawing.Size(121, 24);
             this.cmbSource.TabIndex = 5;
+            this.cmbSource.Visible = false;
             // 
             // lblTarget
             // 
             this.lblTarget.AutoSize = true;
             this.lblTarget.Location = new System.Drawing.Point(12, 303);
             this.lblTarget.Name = "lblTarget";
-            this.lblTarget.Size = new System.Drawing.Size(107, 16);
+            this.lblTarget.Size = new System.Drawing.Size(91, 16);
             this.lblTarget.TabIndex = 6;
-            this.lblTarget.Text = "Reemplazar por:";
+            this.lblTarget.Text = "Reemplaza a:";
             this.lblTarget.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // cmbTarget
             // 
             this.cmbTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTarget.FormattingEnabled = true;
-            this.cmbTarget.Location = new System.Drawing.Point(125, 300);
+            this.cmbTarget.Location = new System.Drawing.Point(123, 274);
             this.cmbTarget.Name = "cmbTarget";
             this.cmbTarget.Size = new System.Drawing.Size(121, 24);
             this.cmbTarget.TabIndex = 7;
+            this.cmbTarget.Visible = false;
             // 
             // btnAddRemap
             // 
@@ -157,22 +160,31 @@
             this.btnRemoveRemap.UseVisualStyleBackColor = true;
             this.btnRemoveRemap.Click += new System.EventHandler(this.btnRemoveRemap_Click);
             // 
-            // btnTestKey
+            // keyCaptureTarget
             // 
-            this.btnTestKey.Location = new System.Drawing.Point(141, 526);
-            this.btnTestKey.Name = "btnTestKey";
-            this.btnTestKey.Size = new System.Drawing.Size(75, 23);
-            this.btnTestKey.TabIndex = 11;
-            this.btnTestKey.Text = "Test X";
-            this.btnTestKey.UseVisualStyleBackColor = true;
-            this.btnTestKey.Click += new System.EventHandler(this.btnTestKey_Click);
+            this.keyCaptureTarget.Location = new System.Drawing.Point(123, 300);
+            this.keyCaptureTarget.Name = "keyCaptureTarget";
+            this.keyCaptureTarget.Size = new System.Drawing.Size(150, 24);
+            this.keyCaptureTarget.TabIndex = 0;
+            this.keyCaptureTarget.TabStop = false;
+            // 
+            // keyCaptureSource
+            // 
+            this.keyCaptureSource.Cursor = System.Windows.Forms.Cursors.Default;
+            this.keyCaptureSource.Location = new System.Drawing.Point(123, 247);
+            this.keyCaptureSource.Name = "keyCaptureSource";
+            this.keyCaptureSource.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.keyCaptureSource.Size = new System.Drawing.Size(150, 24);
+            this.keyCaptureSource.TabIndex = 0;
+            this.keyCaptureSource.TabStop = false;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 561);
-            this.Controls.Add(this.btnTestKey);
+            this.ClientSize = new System.Drawing.Size(294, 561);
+            this.Controls.Add(this.keyCaptureTarget);
+            this.Controls.Add(this.keyCaptureSource);
             this.Controls.Add(this.btnRemoveRemap);
             this.Controls.Add(this.lstRemaps);
             this.Controls.Add(this.btnAddRemap);
@@ -192,6 +204,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "KeyMaster";
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -210,7 +223,8 @@
         private System.Windows.Forms.Button btnAddRemap;
         private System.Windows.Forms.ListBox lstRemaps;
         private System.Windows.Forms.Button btnRemoveRemap;
-        private System.Windows.Forms.Button btnTestKey;
+        private Controls.KeyCaptureControl keyCaptureSource;
+        private Controls.KeyCaptureControl keyCaptureTarget;
     }
 }
 
