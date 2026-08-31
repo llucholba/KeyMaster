@@ -2,17 +2,20 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using KeyMaster.Models;
 
 namespace KeyMaster.Core
 {
     public class KeyboardHook : IDisposable
     {
-        private const int WH_KEYBOARD_LL = 13;
-
         private const int WM_KEYDOWN = 0x0100;
         private const int WM_KEYUP = 0x0101;
         private const int WM_SYSKEYDOWN = 0x0104;
         private const int WM_SYSKEYUP = 0x0105;
+        private const uint LLKHF_EXTENDED = 0x01;
+        private const uint LLKHF_INJECTED = 0x10;
+        private const uint LLKHF_ALTDOWN = 0x20;
+        private const int WH_KEYBOARD_LL = 13;
 
         private readonly LowLevelKeyboardProc _proc;
         private IntPtr _hookId = IntPtr.Zero;
@@ -23,6 +26,14 @@ namespace KeyMaster.Core
         public event EventHandler<KeyEventArgs> KeyUp;
 
         public event Func<Keys, bool> ShouldSuppressKey;
+
+        public event Action<KeyboardEvent> KeyCaptured;
+
+        [DllImport("user32.dll")]
+        private static extern uint MapVirtualKey(
+        uint uCode,
+        uint uMapType);
+        private const uint MAPVK_VK_TO_VSC = 0;
 
         public KeyboardHook()
         {
@@ -58,36 +69,58 @@ namespace KeyMaster.Core
             _hookId = IntPtr.Zero;
         }
 
-        private IntPtr HookCallback(
-            int nCode,
-            IntPtr wParam,
-            IntPtr lParam)
+        private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0)
             {
                 int message = wParam.ToInt32();
 
-                KBDLLHOOKSTRUCT keyboardData =
-                    Marshal.PtrToStructure<KBDLLHOOKSTRUCT>(lParam);
+                KBDLLHOOKSTRUCT keyboardData = Marshal.PtrToStructure<KBDLLHOOKSTRUCT>(lParam);
 
-                Keys key = (Keys)keyboardData.vkCode;
+                Keys key = GetRealKey(keyboardData);
 
-                if (message == WM_KEYDOWN || message == WM_SYSKEYDOWN)
+                bool isKeyDown =
+                    message == WM_KEYDOWN ||
+                    message == WM_SYSKEYDOWN;
+
+                bool isKeyUp =
+                    message == WM_KEYUP ||
+                    message == WM_SYSKEYUP;
+
+                bool isInjected =
+                    (keyboardData.flags & LLKHF_INJECTED) != 0;
+
+                if (isKeyDown)
                 {
                     KeyDown?.Invoke(
                         this,
                         new KeyEventArgs(key));
-
-                    if (ShouldSuppressKey != null && ShouldSuppressKey(key))
-                    {
-                        return (IntPtr)1;
-                    }
                 }
-                else if (message == WM_KEYUP || message == WM_SYSKEYUP)
+                else if (isKeyUp)
                 {
                     KeyUp?.Invoke(
                         this,
                         new KeyEventArgs(key));
+                }
+
+                if (isKeyDown || isKeyUp)
+                {
+                    KeyCaptured?.Invoke(
+                        new KeyboardEvent(
+                            key,
+                            (int)keyboardData.scanCode,
+                            (int)keyboardData.flags,
+                            isKeyDown,
+                            isInjected));
+                }
+
+                if (isKeyDown)
+                {
+                    if (ShouldSuppressKey != null &&
+                        ShouldSuppressKey(key))
+                    {
+                        return (IntPtr)1;
+                    }
                 }
             }
 
@@ -97,6 +130,37 @@ namespace KeyMaster.Core
                 wParam,
                 lParam);
         }
+
+        private Keys GetRealKey(KBDLLHOOKSTRUCT data)
+        {
+            switch (data.vkCode)
+            {
+                case 0x10: // SHIFT
+
+                    if (data.scanCode == 0x36)
+                        return Keys.RShiftKey;
+
+                    return Keys.LShiftKey;
+
+                case 0x11: // CTRL
+
+                    if ((data.flags & LLKHF_EXTENDED) != 0)
+                        return Keys.RControlKey;
+
+                    return Keys.LControlKey;
+
+                case 0x12: // ALT
+
+                    if ((data.flags & LLKHF_EXTENDED) != 0)
+                        return Keys.RMenu;
+
+                    return Keys.LMenu;
+
+                default:
+                    return (Keys)data.vkCode;
+            }
+        }
+
 
         public void Dispose()
         {
