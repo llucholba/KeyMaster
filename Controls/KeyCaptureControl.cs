@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace KeyMaster.Controls
@@ -10,6 +11,12 @@ namespace KeyMaster.Controls
 
         private Keys _selectedKey = Keys.None;
         private bool _capturing;
+
+        // Para que space no llame al evento del click del botón
+        private bool _ignoreNextClick;
+
+        [DllImport("user32.dll")]
+        private static extern short GetAsyncKeyState(int vKey);
 
         public Keys SelectedKey
         {
@@ -40,6 +47,12 @@ namespace KeyMaster.Controls
 
         private void Button_Click(object sender, EventArgs e)
         {
+            if (_ignoreNextClick)
+            {
+                _ignoreNextClick = false;
+                return;
+            }
+
             BeginCapture();
         }
 
@@ -67,8 +80,12 @@ namespace KeyMaster.Controls
             if (!_capturing)
                 return;
 
-            // Le indicamos a WinForms que estas teclas
-            // también deben considerarse teclas de entrada.
+            if (e.KeyCode == Keys.Space)
+            {
+                e.IsInputKey = true;
+                return;
+            }
+
             e.IsInputKey = true;
         }
 
@@ -77,7 +94,31 @@ namespace KeyMaster.Controls
             if (!_capturing)
                 return;
 
-            _selectedKey = e.KeyCode;
+            Keys key = e.KeyCode;
+
+            if (key == Keys.ShiftKey)
+            {
+                if ((GetAsyncKeyState((int)Keys.RShiftKey) & 0x8000) != 0)
+                    key = Keys.RShiftKey;
+                else
+                    key = Keys.LShiftKey;
+            }
+            else if (key == Keys.ControlKey)
+            {
+                if ((GetAsyncKeyState((int)Keys.RControlKey) & 0x8000) != 0)
+                    key = Keys.RControlKey;
+                else
+                    key = Keys.LControlKey;
+            }
+            else if (key == Keys.Menu)
+            {
+                if ((GetAsyncKeyState((int)Keys.RMenu) & 0x8000) != 0)
+                    key = Keys.RMenu;
+                else
+                    key = Keys.LMenu;
+            }
+
+            _selectedKey = key;
 
             _button.Text = GetDisplayName(_selectedKey);
 
@@ -87,6 +128,11 @@ namespace KeyMaster.Controls
                 this,
                 EventArgs.Empty);
 
+            if (e.KeyCode == Keys.Space)
+            {
+                _ignoreNextClick = true;
+            }
+
             e.SuppressKeyPress = true;
             e.Handled = true;
         }
@@ -95,6 +141,24 @@ namespace KeyMaster.Controls
         {
             switch (key)
             {
+                case Keys.LShiftKey:
+                    return "Shift izquierdo";
+
+                case Keys.RShiftKey:
+                    return "Shift derecho";
+
+                case Keys.LControlKey:
+                    return "Ctrl izquierdo";
+
+                case Keys.RControlKey:
+                    return "Ctrl derecho";
+
+                case Keys.LMenu:
+                    return "Alt izquierdo";
+
+                case Keys.RMenu:
+                    return "Alt derecho";
+
                 case Keys.Enter:
                     return "Enter";
 
