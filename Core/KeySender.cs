@@ -8,6 +8,7 @@ namespace KeyMaster.Core
     {
         private const uint INPUT_KEYBOARD = 1;
         private const uint KEYEVENTF_KEYUP = 0x0002;
+        private const uint KEYEVENTF_UNICODE = 0x0004;
 
         [StructLayout(LayoutKind.Sequential)]
         private struct INPUT
@@ -58,9 +59,7 @@ namespace KeyMaster.Core
             public ushort wParamH;
         }
 
-        [DllImport(
-            "user32.dll",
-            SetLastError = true)]
+        [DllImport("user32.dll", SetLastError = true)]
         private static extern uint SendInput(
             uint nInputs,
             INPUT[] pInputs,
@@ -117,6 +116,68 @@ namespace KeyMaster.Core
                 int error = Marshal.GetLastWin32Error();
 
                 throw new System.ComponentModel.Win32Exception(error);
+            }
+
+            return true;
+        }
+
+        public static bool SendText(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return false;
+
+            foreach (char character in text)
+            {
+                INPUT[] inputs =
+                {
+                    new INPUT
+                    {
+                        type = INPUT_KEYBOARD,
+
+                        U = new InputUnion
+                        {
+                            ki = new KEYBDINPUT
+                            {
+                                wVk = 0,
+                                wScan = character,
+                                dwFlags = KEYEVENTF_UNICODE,
+                                time = 0,
+                                dwExtraInfo = UIntPtr.Zero
+                            }
+                        }
+                    },
+
+                    new INPUT
+                    {
+                        type = INPUT_KEYBOARD,
+
+                        U = new InputUnion
+                        {
+                            ki = new KEYBDINPUT
+                            {
+                                wVk = 0,
+                                wScan = character,
+                                dwFlags =
+                                    KEYEVENTF_UNICODE |
+                                    KEYEVENTF_KEYUP,
+                                time = 0,
+                                dwExtraInfo = UIntPtr.Zero
+                            }
+                        }
+                    }
+                };
+
+                uint result = SendInput(
+                    (uint)inputs.Length,
+                    inputs,
+                    Marshal.SizeOf(typeof(INPUT)));
+
+                if (result != inputs.Length)
+                {
+                    int error = Marshal.GetLastWin32Error();
+
+                    throw new System.ComponentModel.Win32Exception(error);
+                }
             }
 
             return true;

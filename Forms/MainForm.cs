@@ -152,8 +152,24 @@ namespace KeyMaster
                         MessageBoxIcon.Error);
                 }
             }
+            else if (hotkey.Action == "Escribir texto")
+            {
+                try
+                {
+                    KeySender.SendText(hotkey.Configuration);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        "No se pudo escribir el texto.\n\n" +
+                        ex.Message,
+                        "Hotkey",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
         }
-
+        
         private bool ShouldSuppressKey(Keys key)
         {
             if (_remapManager.TryGetTarget(key, out Keys target))
