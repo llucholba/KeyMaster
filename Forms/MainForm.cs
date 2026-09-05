@@ -34,6 +34,7 @@ namespace KeyMaster
             _keyboardHook.ShouldSuppressKey += ShouldSuppressKey;
 
             cmbAction.SelectedIndex = 0;
+            cmbAction_SelectedIndexChanged(cmbAction, EventArgs.Empty);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -307,6 +308,21 @@ namespace KeyMaster
 
                 configuration = txtProgram.Text;
             }
+            else if (action == "Escribir texto")
+            {
+                if (string.IsNullOrEmpty(txtHotkeyText.Text))
+                {
+                    MessageBox.Show(
+                        "Escribí el texto que querés enviar.",
+                        "Hotkey",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+                configuration = txtHotkeyText.Text;
+            }
 
             HotkeyAction hotkey = new HotkeyAction();
 
@@ -390,6 +406,24 @@ namespace KeyMaster
                 default:
                     return key.ToString();
             }
+        }
+
+        private void cmbAction_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbAction.SelectedItem == null)
+                return;
+
+            string action = cmbAction.SelectedItem.ToString();
+
+            bool isProgram = action == "Abrir programa";
+
+            txtProgram.Visible = isProgram;
+            btnBrowseProgram.Visible = isProgram;
+
+            lblProgram.Visible = isProgram;
+
+            txtHotkeyText.Visible = !isProgram;
+            lblHotkeyText.Visible = !isProgram;
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)

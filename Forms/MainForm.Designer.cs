@@ -41,9 +41,12 @@
             this.btnRemoveRemap = new System.Windows.Forms.Button();
             this.tabControlKM = new System.Windows.Forms.TabControl();
             this.tabPageRemaps = new System.Windows.Forms.TabPage();
+            this.keyCaptureTarget = new KeyMaster.Controls.KeyCaptureControl();
+            this.keyCaptureSource = new KeyMaster.Controls.KeyCaptureControl();
             this.tabPageHotkeys = new System.Windows.Forms.TabPage();
             this.grpNewHotkey = new System.Windows.Forms.GroupBox();
             this.btnAddHotkey = new System.Windows.Forms.Button();
+            this.hotkeyCapture = new KeyMaster.Controls.HotkeyCaptureControl();
             this.btnBrowseProgram = new System.Windows.Forms.Button();
             this.lblHotkey = new System.Windows.Forms.Label();
             this.txtProgram = new System.Windows.Forms.TextBox();
@@ -52,15 +55,14 @@
             this.cmbAction = new System.Windows.Forms.ComboBox();
             this.grpHotkeys = new System.Windows.Forms.GroupBox();
             this.dgvHotkeys = new System.Windows.Forms.DataGridView();
-            this.tabPageScripts = new System.Windows.Forms.TabPage();
-            this.tabPageConfig = new System.Windows.Forms.TabPage();
             this.colHotkey = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colAction = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colConfiguration = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colEnabled = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.keyCaptureTarget = new KeyMaster.Controls.KeyCaptureControl();
-            this.keyCaptureSource = new KeyMaster.Controls.KeyCaptureControl();
-            this.hotkeyCapture = new KeyMaster.Controls.HotkeyCaptureControl();
+            this.tabPageScripts = new System.Windows.Forms.TabPage();
+            this.tabPageConfig = new System.Windows.Forms.TabPage();
+            this.txtHotkeyText = new System.Windows.Forms.TextBox();
+            this.lblHotkeyText = new System.Windows.Forms.Label();
             this.tabControlKM.SuspendLayout();
             this.tabPageRemaps.SuspendLayout();
             this.tabPageHotkeys.SuspendLayout();
@@ -218,10 +220,26 @@
             this.tabPageRemaps.Location = new System.Drawing.Point(4, 25);
             this.tabPageRemaps.Name = "tabPageRemaps";
             this.tabPageRemaps.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageRemaps.Size = new System.Drawing.Size(676, 532);
+            this.tabPageRemaps.Size = new System.Drawing.Size(776, 532);
             this.tabPageRemaps.TabIndex = 0;
             this.tabPageRemaps.Text = "Remaps";
             this.tabPageRemaps.UseVisualStyleBackColor = true;
+            // 
+            // keyCaptureTarget
+            // 
+            this.keyCaptureTarget.Location = new System.Drawing.Point(117, 254);
+            this.keyCaptureTarget.Name = "keyCaptureTarget";
+            this.keyCaptureTarget.Size = new System.Drawing.Size(201, 24);
+            this.keyCaptureTarget.TabIndex = 6;
+            // 
+            // keyCaptureSource
+            // 
+            this.keyCaptureSource.Cursor = System.Windows.Forms.Cursors.Default;
+            this.keyCaptureSource.Location = new System.Drawing.Point(117, 204);
+            this.keyCaptureSource.Name = "keyCaptureSource";
+            this.keyCaptureSource.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.keyCaptureSource.Size = new System.Drawing.Size(201, 24);
+            this.keyCaptureSource.TabIndex = 5;
             // 
             // tabPageHotkeys
             // 
@@ -238,6 +256,8 @@
             // 
             // grpNewHotkey
             // 
+            this.grpNewHotkey.Controls.Add(this.lblHotkeyText);
+            this.grpNewHotkey.Controls.Add(this.txtHotkeyText);
             this.grpNewHotkey.Controls.Add(this.btnAddHotkey);
             this.grpNewHotkey.Controls.Add(this.hotkeyCapture);
             this.grpNewHotkey.Controls.Add(this.btnBrowseProgram);
@@ -248,7 +268,7 @@
             this.grpNewHotkey.Controls.Add(this.cmbAction);
             this.grpNewHotkey.Location = new System.Drawing.Point(6, 6);
             this.grpNewHotkey.Name = "grpNewHotkey";
-            this.grpNewHotkey.Size = new System.Drawing.Size(762, 225);
+            this.grpNewHotkey.Size = new System.Drawing.Size(762, 250);
             this.grpNewHotkey.TabIndex = 2;
             this.grpNewHotkey.TabStop = false;
             this.grpNewHotkey.Text = "Nueva Hotkey";
@@ -256,13 +276,21 @@
             // btnAddHotkey
             // 
             this.btnAddHotkey.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAddHotkey.Location = new System.Drawing.Point(319, 175);
+            this.btnAddHotkey.Location = new System.Drawing.Point(319, 219);
             this.btnAddHotkey.Name = "btnAddHotkey";
             this.btnAddHotkey.Size = new System.Drawing.Size(125, 25);
             this.btnAddHotkey.TabIndex = 7;
             this.btnAddHotkey.Text = "Agregar Hotkey";
             this.btnAddHotkey.UseVisualStyleBackColor = true;
             this.btnAddHotkey.Click += new System.EventHandler(this.btnAddHotkey_Click);
+            // 
+            // hotkeyCapture
+            // 
+            this.hotkeyCapture.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.hotkeyCapture.Location = new System.Drawing.Point(9, 60);
+            this.hotkeyCapture.Name = "hotkeyCapture";
+            this.hotkeyCapture.Size = new System.Drawing.Size(300, 24);
+            this.hotkeyCapture.TabIndex = 8;
             // 
             // btnBrowseProgram
             // 
@@ -288,10 +316,10 @@
             // 
             // txtProgram
             // 
-            this.txtProgram.Location = new System.Drawing.Point(6, 127);
+            this.txtProgram.Location = new System.Drawing.Point(9, 127);
             this.txtProgram.Name = "txtProgram";
             this.txtProgram.ReadOnly = true;
-            this.txtProgram.Size = new System.Drawing.Size(657, 22);
+            this.txtProgram.Size = new System.Drawing.Size(654, 22);
             this.txtProgram.TabIndex = 5;
             // 
             // lblAction
@@ -331,6 +359,7 @@
             this.cmbAction.Name = "cmbAction";
             this.cmbAction.Size = new System.Drawing.Size(300, 24);
             this.cmbAction.TabIndex = 3;
+            this.cmbAction.SelectedIndexChanged += new System.EventHandler(this.cmbAction_SelectedIndexChanged);
             // 
             // grpHotkeys
             // 
@@ -361,26 +390,6 @@
             this.dgvHotkeys.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvHotkeys.Size = new System.Drawing.Size(747, 231);
             this.dgvHotkeys.TabIndex = 0;
-            // 
-            // tabPageScripts
-            // 
-            this.tabPageScripts.AutoScroll = true;
-            this.tabPageScripts.Location = new System.Drawing.Point(4, 25);
-            this.tabPageScripts.Name = "tabPageScripts";
-            this.tabPageScripts.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageScripts.Size = new System.Drawing.Size(676, 532);
-            this.tabPageScripts.TabIndex = 2;
-            this.tabPageScripts.Text = "Scripts";
-            this.tabPageScripts.UseVisualStyleBackColor = true;
-            // 
-            // tabPageConfig
-            // 
-            this.tabPageConfig.Location = new System.Drawing.Point(4, 25);
-            this.tabPageConfig.Name = "tabPageConfig";
-            this.tabPageConfig.Size = new System.Drawing.Size(676, 532);
-            this.tabPageConfig.TabIndex = 3;
-            this.tabPageConfig.Text = "Config";
-            this.tabPageConfig.UseVisualStyleBackColor = true;
             // 
             // colHotkey
             // 
@@ -414,29 +423,44 @@
             this.colEnabled.ReadOnly = true;
             this.colEnabled.Width = 56;
             // 
-            // keyCaptureTarget
+            // tabPageScripts
             // 
-            this.keyCaptureTarget.Location = new System.Drawing.Point(117, 254);
-            this.keyCaptureTarget.Name = "keyCaptureTarget";
-            this.keyCaptureTarget.Size = new System.Drawing.Size(201, 24);
-            this.keyCaptureTarget.TabIndex = 6;
+            this.tabPageScripts.AutoScroll = true;
+            this.tabPageScripts.Location = new System.Drawing.Point(4, 25);
+            this.tabPageScripts.Name = "tabPageScripts";
+            this.tabPageScripts.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageScripts.Size = new System.Drawing.Size(776, 532);
+            this.tabPageScripts.TabIndex = 2;
+            this.tabPageScripts.Text = "Scripts";
+            this.tabPageScripts.UseVisualStyleBackColor = true;
             // 
-            // keyCaptureSource
+            // tabPageConfig
             // 
-            this.keyCaptureSource.Cursor = System.Windows.Forms.Cursors.Default;
-            this.keyCaptureSource.Location = new System.Drawing.Point(117, 204);
-            this.keyCaptureSource.Name = "keyCaptureSource";
-            this.keyCaptureSource.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.keyCaptureSource.Size = new System.Drawing.Size(201, 24);
-            this.keyCaptureSource.TabIndex = 5;
+            this.tabPageConfig.Location = new System.Drawing.Point(4, 25);
+            this.tabPageConfig.Name = "tabPageConfig";
+            this.tabPageConfig.Size = new System.Drawing.Size(776, 532);
+            this.tabPageConfig.TabIndex = 3;
+            this.tabPageConfig.Text = "Config";
+            this.tabPageConfig.UseVisualStyleBackColor = true;
             // 
-            // hotkeyCapture
+            // txtHotkeyText
             // 
-            this.hotkeyCapture.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.hotkeyCapture.Location = new System.Drawing.Point(9, 60);
-            this.hotkeyCapture.Name = "hotkeyCapture";
-            this.hotkeyCapture.Size = new System.Drawing.Size(300, 24);
-            this.hotkeyCapture.TabIndex = 8;
+            this.txtHotkeyText.Location = new System.Drawing.Point(9, 174);
+            this.txtHotkeyText.Multiline = true;
+            this.txtHotkeyText.Name = "txtHotkeyText";
+            this.txtHotkeyText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtHotkeyText.Size = new System.Drawing.Size(747, 39);
+            this.txtHotkeyText.TabIndex = 9;
+            // 
+            // lblHotkeyText
+            // 
+            this.lblHotkeyText.AutoSize = true;
+            this.lblHotkeyText.Location = new System.Drawing.Point(6, 155);
+            this.lblHotkeyText.Name = "lblHotkeyText";
+            this.lblHotkeyText.Size = new System.Drawing.Size(44, 16);
+            this.lblHotkeyText.TabIndex = 10;
+            this.lblHotkeyText.Text = "Texto:";
+            this.lblHotkeyText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MainForm
             // 
@@ -500,6 +524,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colAction;
         private System.Windows.Forms.DataGridViewTextBoxColumn colConfiguration;
         private System.Windows.Forms.DataGridViewTextBoxColumn colEnabled;
+        private System.Windows.Forms.TextBox txtHotkeyText;
+        private System.Windows.Forms.Label lblHotkeyText;
     }
 }
 
