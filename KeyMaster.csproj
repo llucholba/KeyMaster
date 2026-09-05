@@ -59,6 +59,13 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\HotkeyCaptureControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HotkeyCaptureControl.Designer.cs">
+      <DependentUpon>HotkeyCaptureControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HotkeyAction.cs" />
     <Compile Include="Models\KeyboardEvent.cs" />
     <Compile Include="Models\KeyDefinition.cs" />
     <Compile Include="Models\RemapRule.cs" />
