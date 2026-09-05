@@ -104,10 +104,11 @@ namespace KeyMaster
 
             foreach (HotkeyAction hotkey in _hotkeys)
             {
-                if (!hotkey.Keys.Contains(e.KeyCode))
-                    continue;
-
-                _triggeredHotkeys.Remove(hotkey);
+                if (hotkey.Keys.All(
+                    key => !_pressedKeys.Contains(key)))
+                {
+                    _triggeredHotkeys.Remove(hotkey);
+                }
             }
         }
 
