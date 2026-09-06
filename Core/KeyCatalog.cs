@@ -66,24 +66,24 @@ namespace KeyMaster.Core
 
             // Teclas especiales
             keys.Add(new KeyDefinition(Keys.Enter, "Enter"));
-            keys.Add(new KeyDefinition(Keys.Escape, "Escape"));
+            keys.Add(new KeyDefinition(Keys.Escape, "Esc"));
             keys.Add(new KeyDefinition(Keys.Tab, "Tab"));
-            keys.Add(new KeyDefinition(Keys.Space, "Space"));
-            keys.Add(new KeyDefinition(Keys.Back, "Backspace"));
-            keys.Add(new KeyDefinition(Keys.Delete, "Delete"));
+            keys.Add(new KeyDefinition(Keys.Space, "Espacio"));
+            keys.Add(new KeyDefinition(Keys.Back, "Retroceso"));
+            keys.Add(new KeyDefinition(Keys.Delete, "Supr"));
             keys.Add(new KeyDefinition(Keys.Insert, "Insert"));
-            keys.Add(new KeyDefinition(Keys.Home, "Home"));
-            keys.Add(new KeyDefinition(Keys.End, "End"));
+            keys.Add(new KeyDefinition(Keys.Home, "Inicio"));
+            keys.Add(new KeyDefinition(Keys.End, "Fin"));
             keys.Add(new KeyDefinition(Keys.PageUp, "Page Up"));
             keys.Add(new KeyDefinition(Keys.PageDown, "Page Down"));
 
             // Modificadores
-            keys.Add(new KeyDefinition(Keys.LControlKey, "Ctrl izquierdo"));
-            keys.Add(new KeyDefinition(Keys.RControlKey, "Ctrl derecho"));
-            keys.Add(new KeyDefinition(Keys.LShiftKey, "Shift izquierdo"));
-            keys.Add(new KeyDefinition(Keys.RShiftKey, "Shift derecho"));
-            keys.Add(new KeyDefinition(Keys.LMenu, "Alt izquierdo"));
-            keys.Add(new KeyDefinition(Keys.RMenu, "Alt derecho"));
+            keys.Add(new KeyDefinition(Keys.LControlKey, "Ctrl Izq"));
+            keys.Add(new KeyDefinition(Keys.RControlKey, "Ctrl Der"));
+            keys.Add(new KeyDefinition(Keys.LShiftKey, "Shift Izq"));
+            keys.Add(new KeyDefinition(Keys.RShiftKey, "Shift Der"));
+            keys.Add(new KeyDefinition(Keys.LMenu, "Alt Izq"));
+            keys.Add(new KeyDefinition(Keys.RMenu, "Alt Der"));
 
             return keys;
         }

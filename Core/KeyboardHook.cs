@@ -90,6 +90,17 @@ namespace KeyMaster.Core
                 bool isInjected =
                     (keyboardData.flags & LLKHF_INJECTED) != 0;
 
+                // Ignorar teclas inyectadas por SendInput
+                // para que no vuelvan a entrar al sistema de KeyMaster.
+                if (isInjected)
+                {
+                    return CallNextHookEx(
+                        _hookId,
+                        nCode,
+                        wParam,
+                        lParam);
+                }
+
                 if (isKeyDown)
                 {
                     KeyDown?.Invoke(

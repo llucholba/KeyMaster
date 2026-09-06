@@ -65,6 +65,9 @@ namespace KeyMaster.Core
             INPUT[] pInputs,
             int cbSize);
 
+        [DllImport("user32.dll")]
+        private static extern short GetAsyncKeyState(int vKey);
+
         public static bool SendKey(Keys key)
         {
             ushort virtualKey = (ushort)key;
@@ -121,6 +124,7 @@ namespace KeyMaster.Core
             return true;
         }
 
+        // Método teclado unicode (no usa el portapapeles)
         public static bool SendText(string text)
         {
             if (string.IsNullOrEmpty(text))
@@ -178,6 +182,174 @@ namespace KeyMaster.Core
 
                     throw new System.ComponentModel.Win32Exception(error);
                 }
+            }
+
+            return true;
+        }
+
+        // Método portapapeles (lo inserta temporalmente y luego restaura el que teníamos antes, para no perder nada)
+        public static bool SendTextViaClipboard(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return false;
+
+            string oldText = null;
+            bool hadText = false;
+
+            try
+            {
+                // Guardar el texto actual del portapapeles
+                if (Clipboard.ContainsText())
+                {
+                    oldText = Clipboard.GetText();
+                    hadText = true;
+                }
+
+                // Colocar temporalmente nuestro texto
+                Clipboard.SetText(text);
+
+                // Darle tiempo a Windows para actualizarlo
+                System.Threading.Thread.Sleep(50);
+
+                // Pegar
+                SendCtrlV();
+
+                // Darle tiempo a la aplicación destino
+                System.Threading.Thread.Sleep(150);
+
+                return true;
+            }
+            finally
+            {
+                // Restaurar el texto original
+                try
+                {
+                    if (hadText)
+                    {
+                        Clipboard.SetText(oldText);
+                    }
+                    else
+                    {
+                        Clipboard.Clear();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        "No se pudo restaurar el portapapeles: " +
+                        ex.Message);
+                }
+            }
+        }
+        public static void WaitForHotkeyRelease(System.Collections.Generic.List<Keys> hotkeyKeys)
+        {
+            while (true)
+            {
+                bool anyPressed = false;
+
+                foreach (Keys key in hotkeyKeys)
+                {
+                    short state = GetAsyncKeyState((int)key);
+
+                    if ((state & 0x8000) != 0)
+                    {
+                        anyPressed = true;
+                        break;
+                    }
+                }
+
+                if (!anyPressed)
+                    break;
+
+                System.Threading.Thread.Sleep(10);
+            }
+        }
+        private static bool SendCtrlV()
+        {
+            const ushort VK_CONTROL = 0x11;
+            const ushort VK_V = 0x56;
+
+            INPUT[] inputs =
+            {
+                // Ctrl DOWN
+                new INPUT
+                {
+                    type = INPUT_KEYBOARD,
+                    U = new InputUnion
+                    {
+                        ki = new KEYBDINPUT
+                        {
+                            wVk = VK_CONTROL,
+                            wScan = 0,
+                            dwFlags = 0,
+                            time = 0,
+                            dwExtraInfo = UIntPtr.Zero
+                        }
+                    }
+                },
+
+                // V DOWN
+                new INPUT
+                {
+                    type = INPUT_KEYBOARD,
+                    U = new InputUnion
+                    {
+                        ki = new KEYBDINPUT
+                        {
+                            wVk = VK_V,
+                            wScan = 0,
+                            dwFlags = 0,
+                            time = 0,
+                            dwExtraInfo = UIntPtr.Zero
+                        }
+                    }
+                },
+
+                // V UP
+                new INPUT
+                {
+                    type = INPUT_KEYBOARD,
+                    U = new InputUnion
+                    {
+                        ki = new KEYBDINPUT
+                        {
+                            wVk = VK_V,
+                            wScan = 0,
+                            dwFlags = KEYEVENTF_KEYUP,
+                            time = 0,
+                            dwExtraInfo = UIntPtr.Zero
+                        }
+                    }
+                },
+
+                // Ctrl UP
+                new INPUT
+                {
+                    type = INPUT_KEYBOARD,
+                    U = new InputUnion
+                    {
+                        ki = new KEYBDINPUT
+                        {
+                            wVk = VK_CONTROL,
+                            wScan = 0,
+                            dwFlags = KEYEVENTF_KEYUP,
+                            time = 0,
+                            dwExtraInfo = UIntPtr.Zero
+                        }
+                    }
+                }
+            };
+
+            uint result = SendInput(
+                (uint)inputs.Length,
+                inputs,
+                Marshal.SizeOf(typeof(INPUT)));
+
+            if (result != inputs.Length)
+            {
+                int error = Marshal.GetLastWin32Error();
+
+                throw new System.ComponentModel.Win32Exception(error);
             }
 
             return true;

@@ -6,11 +6,9 @@ namespace KeyMaster.Models
     public class HotkeyAction
     {
         public List<Keys> Keys { get; set; }
-
         public string Action { get; set; }
-
         public string Configuration { get; set; }
-
+        public string TextMethod { get; set; }
         public bool Enabled { get; set; }
 
         public HotkeyAction()

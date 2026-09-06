@@ -35,6 +35,8 @@ namespace KeyMaster
 
             cmbAction.SelectedIndex = 0;
             cmbAction_SelectedIndexChanged(cmbAction, EventArgs.Empty);
+            cmbTextMethod.SelectedIndex = 0;
+            cmbTextMethod_SelectedIndexChanged(cmbTextMethod, EventArgs.Empty);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -61,7 +63,11 @@ namespace KeyMaster
             {
                 _keyboardHook.Start();
 
-                lblStatus.Text = "Estado: Keyboard Hook activo";
+                lblKH.Font = new System.Drawing.Font(lblKH.Font, System.Drawing.FontStyle.Bold);
+                lblStatus.Text = "ACTIVO";
+                lblStatus.ForeColor = System.Drawing.Color.Green;
+                lblStatus.Font = new System.Drawing.Font(lblKH.Font, System.Drawing.FontStyle.Bold);
+                lblStatus.Padding = new Padding(10, 0, 0, 0);
             }
             catch (Exception ex)
             {
@@ -78,7 +84,11 @@ namespace KeyMaster
         {
             _keyboardHook.Stop();
 
-            lblStatus.Text = "Estado: Keyboard Hook detenido";
+            lblKH.Font = new System.Drawing.Font(lblKH.Font, System.Drawing.FontStyle.Regular);
+            lblStatus.Text = "DETENIDO";
+            lblStatus.ForeColor = System.Drawing.Color.Red;
+            lblStatus.Font = new System.Drawing.Font(lblKH.Font, System.Drawing.FontStyle.Regular);
+            lblStatus.Padding = new Padding(0, 0, 0, 0);
         }
 
         private void KeyboardHook_KeyDown(object sender, KeyEventArgs e)
@@ -90,7 +100,7 @@ namespace KeyMaster
 
             if (_pressedKeys.Add(e.KeyCode))
             {
-                CheckHotkeys();
+                CheckHotkeys(e.KeyCode);
             }
         }
 
@@ -113,23 +123,21 @@ namespace KeyMaster
             }
         }
 
-        private void CheckHotkeys()
+        private void CheckHotkeys(Keys pressedKey)
         {
             foreach (HotkeyAction hotkey in _hotkeys)
             {
                 if (!hotkey.Enabled)
                     continue;
 
+                if (!hotkey.Keys.Contains(pressedKey))
+                    continue;
+
                 if (hotkey.Keys.All(
                     key => _pressedKeys.Contains(key)))
                 {
-                    if (_triggeredHotkeys.Contains(hotkey))
-                        continue;
-
-                    _triggeredHotkeys.Add(hotkey);
-
                     ExecuteHotkey(hotkey);
-
+                    
                     return;
                 }
             }
@@ -152,20 +160,28 @@ namespace KeyMaster
                         MessageBoxIcon.Error);
                 }
             }
-            else if (hotkey.Action == "Escribir texto")
+            if (hotkey.Action == "Escribir texto")
             {
-                try
+                if (hotkey.TextMethod == "Portapapeles")
+                {
+                    System.Threading.Tasks.Task.Run(() =>
+                    {
+                        KeySender.WaitForHotkeyRelease(hotkey.Keys);
+
+                        this.BeginInvoke(new Action(() =>
+                        {
+                            KeySender.SendTextViaClipboard(hotkey.Configuration);
+                        }));
+                    });
+
+                    return;
+                }
+
+                if (hotkey.TextMethod == "Teclado Unicode")
                 {
                     KeySender.SendText(hotkey.Configuration);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(
-                        "No se pudo escribir el texto.\n\n" +
-                        ex.Message,
-                        "Hotkey",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+
+                    return;
                 }
             }
         }
@@ -308,6 +324,7 @@ namespace KeyMaster
             string action = cmbAction.SelectedItem.ToString();
 
             string configuration = "";
+            string textMethod = "";
 
             if (action == "Abrir programa")
             {
@@ -337,7 +354,19 @@ namespace KeyMaster
                     return;
                 }
 
+                if (cmbTextMethod.SelectedItem == null)
+                {
+                    MessageBox.Show(
+                        "Seleccioná un método.",
+                        "Hotkey",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    return;
+                }
+
                 configuration = txtHotkeyText.Text;
+                textMethod = cmbTextMethod.SelectedItem.ToString();
             }
 
             HotkeyAction hotkey = new HotkeyAction();
@@ -345,6 +374,7 @@ namespace KeyMaster
             hotkey.Keys.AddRange(hotkeyCapture.SelectedKeys);
 
             hotkey.Action = action;
+            hotkey.TextMethod = textMethod;
             hotkey.Configuration = configuration;
             hotkey.Enabled = true;
 
@@ -355,36 +385,40 @@ namespace KeyMaster
                 hotkey.Keys.Select(
                     key => GetHotkeyDisplayName(key)));
 
+            string actionDisplay = hotkey.Action;
+            if (hotkey.Action == "Escribir texto")
+            {
+                actionDisplay += " (" + hotkey.TextMethod + ")";
+            }
+
             dgvHotkeys.Rows.Add(
                 hotkeyText,
-                hotkey.Action,
+                actionDisplay,
                 hotkey.Configuration,
                 hotkey.Enabled ? "Sí" : "No");
 
             hotkeyCapture.Clear();
             txtProgram.Clear();
+            txtHotkeyText.Clear();
         }
         private string GetHotkeyDisplayName(Keys key)
         {
             switch (key)
             {
                 case Keys.LShiftKey:
-                    return "Shift izquierdo";
-
+                    return "Shift Izq";
                 case Keys.RShiftKey:
-                    return "Shift derecho";
+                    return "Shift Der";
 
                 case Keys.LControlKey:
-                    return "Ctrl izquierdo";
-
+                    return "Ctrl Izq";
                 case Keys.RControlKey:
-                    return "Ctrl derecho";
+                    return "Ctrl Der";
 
                 case Keys.LMenu:
-                    return "Alt izquierdo";
-
+                    return "Alt Izq";
                 case Keys.RMenu:
-                    return "Alt derecho";
+                    return "Alt Der";
 
                 case Keys.Enter:
                     return "Enter";
@@ -393,31 +427,111 @@ namespace KeyMaster
                     return "Tab";
 
                 case Keys.Space:
-                    return "Space";
+                    return "Espacio";
 
                 case Keys.Escape:
-                    return "Escape";
+                    return "Esc";
 
                 case Keys.Back:
-                    return "Backspace";
-
-                case Keys.Delete:
-                    return "Delete";
+                    return "Retroceso";
 
                 case Keys.Insert:
                     return "Insert";
-
                 case Keys.Home:
-                    return "Home";
-
+                    return "Inicio";
+                case Keys.Delete:
+                    return "Supr";
                 case Keys.End:
-                    return "End";
-
+                    return "Fin";
                 case Keys.PageUp:
                     return "Page Up";
-
                 case Keys.PageDown:
                     return "Page Down";
+
+                case Keys.Up:
+                    return "Arriba";
+                case Keys.Down:
+                    return "Abajo";
+                case Keys.Left:
+                    return "Izq";
+                case Keys.Right:
+                    return "Der";
+
+                case Keys.D1:
+                    return "1";
+                case Keys.D2:
+                    return "2";
+                case Keys.D3:
+                    return "3";
+                case Keys.D4:
+                    return "4";
+                case Keys.D5:
+                    return "5";
+                case Keys.D6:
+                    return "6";
+                case Keys.D7:
+                    return "7";
+                case Keys.D8:
+                    return "8";
+                case Keys.D9:
+                    return "9";
+                case Keys.D0:
+                    return "0";
+
+                case Keys.NumPad1:
+                    return "Num 1";
+                case Keys.NumPad2:
+                    return "Num 2";
+                case Keys.NumPad3:
+                    return "Num 3";
+                case Keys.NumPad4:
+                    return "Num 4";
+                case Keys.NumPad5:
+                    return "Num 5";
+                case Keys.NumPad6:
+                    return "Num 6";
+                case Keys.NumPad7:
+                    return "Num 7";
+                case Keys.NumPad8:
+                    return "Num 8";
+                case Keys.NumPad9:
+                    return "Num 9";
+                case Keys.NumPad0:
+                    return "Num 0";
+                case Keys.Add:
+                    return "Num +";
+                case Keys.Subtract:
+                    return "Num -";
+                case Keys.Multiply:
+                    return "Num *";
+                case Keys.Divide:
+                    return "Num /";
+                case Keys.NumLock:
+                    return "Bloq Num";
+                case Keys.Decimal:
+                    return "Num .";
+
+                case Keys.Capital:
+                    return "Bloq Mayús";
+
+                case Keys.Oemtilde:
+                    return "Ñ";
+
+                case Keys.Oemcomma:
+                    return ",";
+                case Keys.OemPeriod:
+                    return ".";
+                case Keys.Oemplus:
+                    return "(+)";
+                case Keys.OemMinus:
+                    return "(-)";
+
+                case Keys.PrintScreen:
+                    return "Impr Pant";
+                case Keys.Scroll:
+                    return "Bloq Despl";
+                case Keys.Pause:
+                    return "Pausa";
 
                 default:
                     return key.ToString();
@@ -433,13 +547,23 @@ namespace KeyMaster
 
             bool isProgram = action == "Abrir programa";
 
+            bool isText = action == "Escribir texto";
+
             txtProgram.Visible = isProgram;
             btnBrowseProgram.Visible = isProgram;
-
             lblProgram.Visible = isProgram;
 
             txtHotkeyText.Visible = !isProgram;
             lblHotkeyText.Visible = !isProgram;
+
+            lblTextMethod.Visible = isText;
+            cmbTextMethod.Visible = isText;
+        }
+
+        private void cmbTextMethod_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbTextMethod.SelectedItem == null)
+                return;
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)

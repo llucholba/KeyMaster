@@ -45,6 +45,10 @@
             this.keyCaptureSource = new KeyMaster.Controls.KeyCaptureControl();
             this.tabPageHotkeys = new System.Windows.Forms.TabPage();
             this.grpNewHotkey = new System.Windows.Forms.GroupBox();
+            this.cmbTextMethod = new System.Windows.Forms.ComboBox();
+            this.lblTextMethod = new System.Windows.Forms.Label();
+            this.lblHotkeyText = new System.Windows.Forms.Label();
+            this.txtHotkeyText = new System.Windows.Forms.TextBox();
             this.btnAddHotkey = new System.Windows.Forms.Button();
             this.hotkeyCapture = new KeyMaster.Controls.HotkeyCaptureControl();
             this.btnBrowseProgram = new System.Windows.Forms.Button();
@@ -61,8 +65,7 @@
             this.colEnabled = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPageScripts = new System.Windows.Forms.TabPage();
             this.tabPageConfig = new System.Windows.Forms.TabPage();
-            this.txtHotkeyText = new System.Windows.Forms.TextBox();
-            this.lblHotkeyText = new System.Windows.Forms.Label();
+            this.lblKH = new System.Windows.Forms.Label();
             this.tabControlKM.SuspendLayout();
             this.tabPageRemaps.SuspendLayout();
             this.tabPageHotkeys.SuspendLayout();
@@ -74,11 +77,12 @@
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(84, 10);
+            this.lblStatus.ForeColor = System.Drawing.Color.Red;
+            this.lblStatus.Location = new System.Drawing.Point(176, 10);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(158, 16);
+            this.lblStatus.Size = new System.Drawing.Size(77, 16);
             this.lblStatus.TabIndex = 0;
-            this.lblStatus.Text = "Keyboard Hook detenido";
+            this.lblStatus.Text = "DETENIDO";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnStart
@@ -204,6 +208,7 @@
             // tabPageRemaps
             // 
             this.tabPageRemaps.AutoScroll = true;
+            this.tabPageRemaps.Controls.Add(this.lblKH);
             this.tabPageRemaps.Controls.Add(this.lblStatus);
             this.tabPageRemaps.Controls.Add(this.btnRemoveRemap);
             this.tabPageRemaps.Controls.Add(this.keyCaptureTarget);
@@ -222,7 +227,7 @@
             this.tabPageRemaps.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageRemaps.Size = new System.Drawing.Size(776, 532);
             this.tabPageRemaps.TabIndex = 0;
-            this.tabPageRemaps.Text = "Remaps";
+            this.tabPageRemaps.Text = "Remapeos";
             this.tabPageRemaps.UseVisualStyleBackColor = true;
             // 
             // keyCaptureTarget
@@ -256,6 +261,8 @@
             // 
             // grpNewHotkey
             // 
+            this.grpNewHotkey.Controls.Add(this.cmbTextMethod);
+            this.grpNewHotkey.Controls.Add(this.lblTextMethod);
             this.grpNewHotkey.Controls.Add(this.lblHotkeyText);
             this.grpNewHotkey.Controls.Add(this.txtHotkeyText);
             this.grpNewHotkey.Controls.Add(this.btnAddHotkey);
@@ -272,6 +279,50 @@
             this.grpNewHotkey.TabIndex = 2;
             this.grpNewHotkey.TabStop = false;
             this.grpNewHotkey.Text = "Nueva Hotkey";
+            // 
+            // cmbTextMethod
+            // 
+            this.cmbTextMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTextMethod.FormattingEnabled = true;
+            this.cmbTextMethod.Items.AddRange(new object[] {
+            "Portapapeles",
+            "Teclado Unicode"});
+            this.cmbTextMethod.Location = new System.Drawing.Point(515, 87);
+            this.cmbTextMethod.Name = "cmbTextMethod";
+            this.cmbTextMethod.Size = new System.Drawing.Size(241, 24);
+            this.cmbTextMethod.TabIndex = 12;
+            this.cmbTextMethod.Visible = false;
+            this.cmbTextMethod.SelectedIndexChanged += new System.EventHandler(this.cmbTextMethod_SelectedIndexChanged);
+            // 
+            // lblTextMethod
+            // 
+            this.lblTextMethod.AutoSize = true;
+            this.lblTextMethod.Location = new System.Drawing.Point(453, 90);
+            this.lblTextMethod.Name = "lblTextMethod";
+            this.lblTextMethod.Size = new System.Drawing.Size(56, 16);
+            this.lblTextMethod.TabIndex = 11;
+            this.lblTextMethod.Text = "Método:";
+            this.lblTextMethod.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTextMethod.Visible = false;
+            // 
+            // lblHotkeyText
+            // 
+            this.lblHotkeyText.AutoSize = true;
+            this.lblHotkeyText.Location = new System.Drawing.Point(6, 155);
+            this.lblHotkeyText.Name = "lblHotkeyText";
+            this.lblHotkeyText.Size = new System.Drawing.Size(44, 16);
+            this.lblHotkeyText.TabIndex = 10;
+            this.lblHotkeyText.Text = "Texto:";
+            this.lblHotkeyText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // txtHotkeyText
+            // 
+            this.txtHotkeyText.Location = new System.Drawing.Point(9, 174);
+            this.txtHotkeyText.Multiline = true;
+            this.txtHotkeyText.Name = "txtHotkeyText";
+            this.txtHotkeyText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtHotkeyText.Size = new System.Drawing.Size(747, 39);
+            this.txtHotkeyText.TabIndex = 9;
             // 
             // btnAddHotkey
             // 
@@ -443,24 +494,15 @@
             this.tabPageConfig.Text = "Config";
             this.tabPageConfig.UseVisualStyleBackColor = true;
             // 
-            // txtHotkeyText
+            // lblKH
             // 
-            this.txtHotkeyText.Location = new System.Drawing.Point(9, 174);
-            this.txtHotkeyText.Multiline = true;
-            this.txtHotkeyText.Name = "txtHotkeyText";
-            this.txtHotkeyText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtHotkeyText.Size = new System.Drawing.Size(747, 39);
-            this.txtHotkeyText.TabIndex = 9;
-            // 
-            // lblHotkeyText
-            // 
-            this.lblHotkeyText.AutoSize = true;
-            this.lblHotkeyText.Location = new System.Drawing.Point(6, 155);
-            this.lblHotkeyText.Name = "lblHotkeyText";
-            this.lblHotkeyText.Size = new System.Drawing.Size(44, 16);
-            this.lblHotkeyText.TabIndex = 10;
-            this.lblHotkeyText.Text = "Texto:";
-            this.lblHotkeyText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblKH.AutoSize = true;
+            this.lblKH.Location = new System.Drawing.Point(73, 10);
+            this.lblKH.Name = "lblKH";
+            this.lblKH.Size = new System.Drawing.Size(102, 16);
+            this.lblKH.TabIndex = 10;
+            this.lblKH.Text = "Keyboard Hook";
+            this.lblKH.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MainForm
             // 
@@ -526,6 +568,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colEnabled;
         private System.Windows.Forms.TextBox txtHotkeyText;
         private System.Windows.Forms.Label lblHotkeyText;
+        private System.Windows.Forms.Label lblTextMethod;
+        private System.Windows.Forms.ComboBox cmbTextMethod;
+        private System.Windows.Forms.Label lblKH;
     }
 }
 
