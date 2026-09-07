@@ -7,10 +7,18 @@ namespace KeyMaster.Core
 {
     public class RemapManager
     {
-        private readonly List<RemapRule> _rules;
+        private List<RemapRule> _rules;
 
         public RemapManager(List<RemapRule> rules)
         {
+            _rules = rules;
+        }
+
+        public void SetRules(List<RemapRule> rules)
+        {
+            if (rules == null)
+                return;
+
             _rules = rules;
         }
 

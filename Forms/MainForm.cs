@@ -602,6 +602,61 @@ namespace KeyMaster
             RefreshProfileList();
         }
 
+        private void ChangeActiveProfile(Profile profile)
+        {
+            if (profile == null)
+                return;
+
+            _profileManager.SetActiveProfile(profile);
+
+            _remapManager.SetRules(profile.Remaps);
+
+            RefreshRemapList();
+
+            RefreshHotkeyList();
+        }
+        private void RefreshHotkeyList()
+        {
+            dgvHotkeys.Rows.Clear();
+
+            foreach (HotkeyAction hotkey in _hotkeys)
+            {
+                string hotkeyText = string.Join(
+                    " + ",
+                    hotkey.Keys.Select(key => KeyCatalog.GetDisplayName(key)));
+
+                string actionDisplay = hotkey.Action;
+
+                if (hotkey.Action == "Escribir texto")
+                {
+                    actionDisplay +=
+                        " (" + hotkey.TextMethod + ")";
+                }
+
+                dgvHotkeys.Rows.Add(
+                    hotkeyText,
+                    actionDisplay,
+                    hotkey.Configuration,
+                    hotkey.Enabled ? "Sí" : "No");
+            }
+        }
+
+        private void cmbProfiles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbProfiles.SelectedItem == null)
+                return;
+
+            Profile profile = cmbProfiles.SelectedItem as Profile;
+
+            if (profile == null)
+                return;
+
+            if (profile == _profileManager.ActiveProfile)
+                return;
+
+            ChangeActiveProfile(profile);
+        }
+
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
             _keyboardHook?.Dispose();

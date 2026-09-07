@@ -68,12 +68,12 @@
             this.colEnabled = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPageScripts = new System.Windows.Forms.TabPage();
             this.tabPageConfig = new System.Windows.Forms.TabPage();
-            this.toolTipKeyPress = new System.Windows.Forms.ToolTip(this.components);
-            this.lblProfile = new System.Windows.Forms.Label();
-            this.cmbProfiles = new System.Windows.Forms.ComboBox();
-            this.btnNewProfile = new System.Windows.Forms.Button();
-            this.btnRenameProfile = new System.Windows.Forms.Button();
             this.btnDeleteProfile = new System.Windows.Forms.Button();
+            this.btnRenameProfile = new System.Windows.Forms.Button();
+            this.btnNewProfile = new System.Windows.Forms.Button();
+            this.cmbProfiles = new System.Windows.Forms.ComboBox();
+            this.lblProfile = new System.Windows.Forms.Label();
+            this.toolTipKeyPress = new System.Windows.Forms.ToolTip(this.components);
             this.tabControlKM.SuspendLayout();
             this.tabPageRemaps.SuspendLayout();
             this.tabPageHotkeys.SuspendLayout();
@@ -525,34 +525,15 @@
             this.tabPageConfig.Text = "Config";
             this.tabPageConfig.UseVisualStyleBackColor = true;
             // 
-            // lblProfile
+            // btnDeleteProfile
             // 
-            this.lblProfile.AutoSize = true;
-            this.lblProfile.Location = new System.Drawing.Point(8, 10);
-            this.lblProfile.Name = "lblProfile";
-            this.lblProfile.Size = new System.Drawing.Size(79, 16);
-            this.lblProfile.TabIndex = 0;
-            this.lblProfile.Text = "Perfil activo:";
-            this.lblProfile.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // cmbProfiles
-            // 
-            this.cmbProfiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbProfiles.FormattingEnabled = true;
-            this.cmbProfiles.Location = new System.Drawing.Point(93, 7);
-            this.cmbProfiles.Name = "cmbProfiles";
-            this.cmbProfiles.Size = new System.Drawing.Size(181, 24);
-            this.cmbProfiles.TabIndex = 1;
-            // 
-            // btnNewProfile
-            // 
-            this.btnNewProfile.Location = new System.Drawing.Point(11, 50);
-            this.btnNewProfile.Name = "btnNewProfile";
-            this.btnNewProfile.Size = new System.Drawing.Size(75, 23);
-            this.btnNewProfile.TabIndex = 2;
-            this.btnNewProfile.Text = "Nuevo";
-            this.btnNewProfile.UseVisualStyleBackColor = true;
-            this.btnNewProfile.Click += new System.EventHandler(this.btnNewProfile_Click);
+            this.btnDeleteProfile.Location = new System.Drawing.Point(199, 50);
+            this.btnDeleteProfile.Name = "btnDeleteProfile";
+            this.btnDeleteProfile.Size = new System.Drawing.Size(75, 23);
+            this.btnDeleteProfile.TabIndex = 4;
+            this.btnDeleteProfile.Text = "Eliminar";
+            this.btnDeleteProfile.UseVisualStyleBackColor = true;
+            this.btnDeleteProfile.Click += new System.EventHandler(this.btnDeleteProfile_Click);
             // 
             // btnRenameProfile
             // 
@@ -564,15 +545,35 @@
             this.btnRenameProfile.UseVisualStyleBackColor = true;
             this.btnRenameProfile.Click += new System.EventHandler(this.btnRenameProfile_Click);
             // 
-            // btnDeleteProfile
+            // btnNewProfile
             // 
-            this.btnDeleteProfile.Location = new System.Drawing.Point(199, 50);
-            this.btnDeleteProfile.Name = "btnDeleteProfile";
-            this.btnDeleteProfile.Size = new System.Drawing.Size(75, 23);
-            this.btnDeleteProfile.TabIndex = 4;
-            this.btnDeleteProfile.Text = "Eliminar";
-            this.btnDeleteProfile.UseVisualStyleBackColor = true;
-            this.btnDeleteProfile.Click += new System.EventHandler(this.btnDeleteProfile_Click);
+            this.btnNewProfile.Location = new System.Drawing.Point(11, 50);
+            this.btnNewProfile.Name = "btnNewProfile";
+            this.btnNewProfile.Size = new System.Drawing.Size(75, 23);
+            this.btnNewProfile.TabIndex = 2;
+            this.btnNewProfile.Text = "Nuevo";
+            this.btnNewProfile.UseVisualStyleBackColor = true;
+            this.btnNewProfile.Click += new System.EventHandler(this.btnNewProfile_Click);
+            // 
+            // cmbProfiles
+            // 
+            this.cmbProfiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbProfiles.FormattingEnabled = true;
+            this.cmbProfiles.Location = new System.Drawing.Point(93, 7);
+            this.cmbProfiles.Name = "cmbProfiles";
+            this.cmbProfiles.Size = new System.Drawing.Size(181, 24);
+            this.cmbProfiles.TabIndex = 1;
+            this.cmbProfiles.SelectedIndexChanged += new System.EventHandler(this.cmbProfiles_SelectedIndexChanged);
+            // 
+            // lblProfile
+            // 
+            this.lblProfile.AutoSize = true;
+            this.lblProfile.Location = new System.Drawing.Point(8, 10);
+            this.lblProfile.Name = "lblProfile";
+            this.lblProfile.Size = new System.Drawing.Size(79, 16);
+            this.lblProfile.TabIndex = 0;
+            this.lblProfile.Text = "Perfil activo:";
+            this.lblProfile.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MainForm
             // 
