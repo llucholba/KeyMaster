@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using KeyMaster.Core;
 
 namespace KeyMaster.Controls
 {
@@ -171,7 +172,7 @@ namespace KeyMaster.Controls
 
             _button.Text = string.Join(
                 " + ",
-                _hotkeyKeys.Select(GetDisplayName));
+                _hotkeyKeys.Select(KeyCatalog.GetDisplayName));
         }
 
         private void Button_MouseUp(object sender, MouseEventArgs e)
@@ -180,143 +181,6 @@ namespace KeyMaster.Controls
                 return;
 
             Clear();
-        }
-
-        private string GetDisplayName(Keys key)
-        {
-            switch (key)
-            {
-                case Keys.LShiftKey:
-                    return "Shift Izq";
-                case Keys.RShiftKey:
-                    return "Shift Der";
-
-                case Keys.LControlKey:
-                    return "Ctrl Izq";
-                case Keys.RControlKey:
-                    return "Ctrl Der";
-
-                case Keys.LMenu:
-                    return "Alt Izq";
-                case Keys.RMenu:
-                    return "Alt Der";
-
-                case Keys.Enter:
-                    return "Enter";
-
-                case Keys.Tab:
-                    return "Tab";
-
-                case Keys.Space:
-                    return "Espacio";
-
-                case Keys.Escape:
-                    return "Esc";
-
-                case Keys.Back:
-                    return "Retroceso";
-
-                case Keys.Insert:
-                    return "Insert";
-                case Keys.Home:
-                    return "Inicio";
-                case Keys.Delete:
-                    return "Supr";
-                case Keys.End:
-                    return "Fin";
-                case Keys.PageUp:
-                    return "Page Up";
-                case Keys.PageDown:
-                    return "Page Down";
-
-                case Keys.Up:
-                    return "Arriba";
-                case Keys.Down:
-                    return "Abajo";
-                case Keys.Left:
-                    return "Izq";
-                case Keys.Right:
-                    return "Der";
-
-                case Keys.D1:
-                    return "1";
-                case Keys.D2:
-                    return "2";
-                case Keys.D3:
-                    return "3";
-                case Keys.D4:
-                    return "4";
-                case Keys.D5:
-                    return "5";
-                case Keys.D6:
-                    return "6";
-                case Keys.D7:
-                    return "7";
-                case Keys.D8:
-                    return "8";
-                case Keys.D9:
-                    return "9";
-                case Keys.D0:
-                    return "0";
-
-                case Keys.NumPad1:
-                    return "Num 1";
-                case Keys.NumPad2:
-                    return "Num 2";
-                case Keys.NumPad3:
-                    return "Num 3";
-                case Keys.NumPad4:
-                    return "Num 4";
-                case Keys.NumPad5:
-                    return "Num 5";
-                case Keys.NumPad6:
-                    return "Num 6";
-                case Keys.NumPad7:
-                    return "Num 7";
-                case Keys.NumPad8:
-                    return "Num 8";
-                case Keys.NumPad9:
-                    return "Num 9";
-                case Keys.NumPad0:
-                    return "Num 0";
-                case Keys.Add:
-                    return "Num +";
-                case Keys.Subtract:
-                    return "Num -";
-                case Keys.Multiply:
-                    return "Num *";
-                case Keys.Divide:
-                    return "Num /";
-                case Keys.NumLock:
-                    return "Bloq Num";
-                case Keys.Decimal:
-                    return "Num .";
-
-                case Keys.Capital:
-                    return "Bloq Mayús";
-
-                case Keys.Oemtilde:
-                    return "Ñ";
-
-                case Keys.Oemcomma:
-                    return ",";
-                case Keys.OemPeriod:
-                    return ".";
-                case Keys.Oemplus:
-                    return "(+)";
-                case Keys.OemMinus:
-                    return "(-)";
-
-                case Keys.PrintScreen:
-                    return "Impr Pant";
-                case Keys.Scroll:
-                    return "Bloq Despl";
-                case Keys.Pause:
-                    return "Pausa";
-
-                default:
-                    return key.ToString();
-            }
         }
 
         public void Clear()
