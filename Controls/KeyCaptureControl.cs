@@ -42,6 +42,8 @@ namespace KeyMaster.Controls
             _button.PreviewKeyDown += Button_PreviewKeyDown;
             _button.KeyDown += Button_KeyDown;
 
+            _button.MouseUp += Button_MouseUp;
+
             Controls.Add(_button);
         }
 
@@ -141,6 +143,14 @@ namespace KeyMaster.Controls
 
             e.SuppressKeyPress = true;
             e.Handled = true;
+        }
+
+        private void Button_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Right)
+                return;
+
+            Clear();
         }
 
         private string GetDisplayName(Keys key)

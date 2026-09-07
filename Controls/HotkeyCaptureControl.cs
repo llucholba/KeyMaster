@@ -45,6 +45,8 @@ namespace KeyMaster.Controls
             _button.KeyDown += Button_KeyDown;
             _button.KeyUp += Button_KeyUp;
 
+            _button.MouseUp += Button_MouseUp;
+
             Controls.Add(_button);
         }
 
@@ -170,6 +172,14 @@ namespace KeyMaster.Controls
             _button.Text = string.Join(
                 " + ",
                 _hotkeyKeys.Select(GetDisplayName));
+        }
+
+        private void Button_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Right)
+                return;
+
+            Clear();
         }
 
         private string GetDisplayName(Keys key)
