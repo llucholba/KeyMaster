@@ -52,6 +52,7 @@
     <Compile Include="Core\KeyboardHook.cs" />
     <Compile Include="Core\KeyCatalog.cs" />
     <Compile Include="Core\KeySender.cs" />
+    <Compile Include="Core\RemapListItem.cs" />
     <Compile Include="Core\RemapManager.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>

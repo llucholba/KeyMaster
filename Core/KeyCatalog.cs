@@ -25,6 +25,7 @@ namespace KeyMaster.Core
             keys.Add(new KeyDefinition(Keys.L, "L"));
             keys.Add(new KeyDefinition(Keys.M, "M"));
             keys.Add(new KeyDefinition(Keys.N, "N"));
+            keys.Add(new KeyDefinition(Keys.Oemtilde, "Ñ"));
             keys.Add(new KeyDefinition(Keys.O, "O"));
             keys.Add(new KeyDefinition(Keys.P, "P"));
             keys.Add(new KeyDefinition(Keys.Q, "Q"));
@@ -84,8 +85,55 @@ namespace KeyMaster.Core
             keys.Add(new KeyDefinition(Keys.RShiftKey, "Shift Der"));
             keys.Add(new KeyDefinition(Keys.LMenu, "Alt Izq"));
             keys.Add(new KeyDefinition(Keys.RMenu, "Alt Der"));
+            keys.Add(new KeyDefinition(Keys.Capital, "Bloq Mayús"));
+
+            // Direccionales
+            keys.Add(new KeyDefinition(Keys.Up, "Arriba"));
+            keys.Add(new KeyDefinition(Keys.Down, "Abajo"));
+            keys.Add(new KeyDefinition(Keys.Left, "Izq"));
+            keys.Add(new KeyDefinition(Keys.Right, "Der"));
+
+            // Teclado numérico (Num Pad)
+            keys.Add(new KeyDefinition(Keys.NumPad0, "Num 0"));
+            keys.Add(new KeyDefinition(Keys.NumPad1, "Num 1"));
+            keys.Add(new KeyDefinition(Keys.NumPad2, "Num 2"));
+            keys.Add(new KeyDefinition(Keys.NumPad3, "Num 3"));
+            keys.Add(new KeyDefinition(Keys.NumPad4, "Num 4"));
+            keys.Add(new KeyDefinition(Keys.NumPad5, "Num 5"));
+            keys.Add(new KeyDefinition(Keys.NumPad6, "Num 6"));
+            keys.Add(new KeyDefinition(Keys.NumPad7, "Num 7"));
+            keys.Add(new KeyDefinition(Keys.NumPad8, "Num 8"));
+            keys.Add(new KeyDefinition(Keys.NumPad9, "Num 9"));
+            keys.Add(new KeyDefinition(Keys.Add, "Num +"));
+            keys.Add(new KeyDefinition(Keys.Subtract, "Num -"));
+            keys.Add(new KeyDefinition(Keys.Multiply, "Num *"));
+            keys.Add(new KeyDefinition(Keys.Divide, "Num /"));
+            keys.Add(new KeyDefinition(Keys.Decimal, "Num ."));
+            keys.Add(new KeyDefinition(Keys.NumLock, "Bloq Num"));
+
+            // Puntuación y símbolos
+            keys.Add(new KeyDefinition(Keys.Oemcomma, ","));
+            keys.Add(new KeyDefinition(Keys.OemPeriod, "."));
+            keys.Add(new KeyDefinition(Keys.Oemplus, "(+)"));
+            keys.Add(new KeyDefinition(Keys.OemMinus, "(-)"));
+
+            // Otras, sin categoría específica
+            keys.Add(new KeyDefinition(Keys.PrintScreen, "Impr Pant"));
+            keys.Add(new KeyDefinition(Keys.Scroll, "Bloq Despl"));
+            keys.Add(new KeyDefinition(Keys.Pause, "Pausa"));
 
             return keys;
+        }
+
+        public static string GetDisplayName(Keys key)
+        {
+            foreach (KeyDefinition definition in GetKeys())
+            {
+                if (definition.Key == key)
+                    return definition.DisplayName;
+            }
+
+            return key.ToString();
         }
     }
 }
