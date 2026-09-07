@@ -193,17 +193,12 @@ namespace KeyMaster.Core
             if (string.IsNullOrEmpty(text))
                 return false;
 
-            string oldText = null;
-            bool hadText = false;
+            IDataObject oldClipboard = null;
 
             try
             {
-                // Guardar el texto actual del portapapeles
-                if (Clipboard.ContainsText())
-                {
-                    oldText = Clipboard.GetText();
-                    hadText = true;
-                }
+                // Crear una copia independiente del portapapeles actual
+                oldClipboard = CloneClipboardData();
 
                 // Colocar temporalmente nuestro texto
                 Clipboard.SetText(text);
@@ -221,12 +216,14 @@ namespace KeyMaster.Core
             }
             finally
             {
-                // Restaurar el texto original
+                // Restaurar el portapapeles completo
                 try
                 {
-                    if (hadText)
+                    if (oldClipboard != null)
                     {
-                        Clipboard.SetText(oldText);
+                        Clipboard.SetDataObject(
+                            oldClipboard,
+                            true);
                     }
                     else
                     {
@@ -241,6 +238,41 @@ namespace KeyMaster.Core
                 }
             }
         }
+        private static IDataObject CloneClipboardData()
+        {
+            IDataObject source = Clipboard.GetDataObject();
+
+            if (source == null)
+                return null;
+
+            DataObject clone = new DataObject();
+
+            string[] formats = source.GetFormats(false);
+
+            foreach (string format in formats)
+            {
+                try
+                {
+                    object data = source.GetData(format, false);
+
+                    if (data != null)
+                    {
+                        clone.SetData(format, data);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        "No se pudo copiar el formato " +
+                        format +
+                        ": " +
+                        ex.Message);
+                }
+            }
+
+            return clone;
+        }
+
         public static void WaitForHotkeyRelease(System.Collections.Generic.List<Keys> hotkeyKeys)
         {
             while (true)
