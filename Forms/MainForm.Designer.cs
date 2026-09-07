@@ -43,6 +43,8 @@
             this.tabControlKM = new System.Windows.Forms.TabControl();
             this.tabPageRemaps = new System.Windows.Forms.TabPage();
             this.lblKH = new System.Windows.Forms.Label();
+            this.keyCaptureTarget = new KeyMaster.Controls.KeyCaptureControl();
+            this.keyCaptureSource = new KeyMaster.Controls.KeyCaptureControl();
             this.tabPageHotkeys = new System.Windows.Forms.TabPage();
             this.grpNewHotkey = new System.Windows.Forms.GroupBox();
             this.cmbTextMethod = new System.Windows.Forms.ComboBox();
@@ -50,6 +52,7 @@
             this.lblHotkeyText = new System.Windows.Forms.Label();
             this.txtHotkeyText = new System.Windows.Forms.TextBox();
             this.btnAddHotkey = new System.Windows.Forms.Button();
+            this.hotkeyCapture = new KeyMaster.Controls.HotkeyCaptureControl();
             this.btnBrowseProgram = new System.Windows.Forms.Button();
             this.lblHotkey = new System.Windows.Forms.Label();
             this.txtProgram = new System.Windows.Forms.TextBox();
@@ -66,15 +69,18 @@
             this.tabPageScripts = new System.Windows.Forms.TabPage();
             this.tabPageConfig = new System.Windows.Forms.TabPage();
             this.toolTipKeyPress = new System.Windows.Forms.ToolTip(this.components);
-            this.keyCaptureTarget = new KeyMaster.Controls.KeyCaptureControl();
-            this.keyCaptureSource = new KeyMaster.Controls.KeyCaptureControl();
-            this.hotkeyCapture = new KeyMaster.Controls.HotkeyCaptureControl();
+            this.lblProfile = new System.Windows.Forms.Label();
+            this.cmbProfiles = new System.Windows.Forms.ComboBox();
+            this.btnNewProfile = new System.Windows.Forms.Button();
+            this.btnRenameProfile = new System.Windows.Forms.Button();
+            this.btnDeleteProfile = new System.Windows.Forms.Button();
             this.tabControlKM.SuspendLayout();
             this.tabPageRemaps.SuspendLayout();
             this.tabPageHotkeys.SuspendLayout();
             this.grpNewHotkey.SuspendLayout();
             this.grpHotkeys.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHotkeys)).BeginInit();
+            this.tabPageConfig.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblStatus
@@ -240,6 +246,23 @@
             this.lblKH.Text = "Keyboard Hook";
             this.lblKH.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // keyCaptureTarget
+            // 
+            this.keyCaptureTarget.Cursor = System.Windows.Forms.Cursors.Help;
+            this.keyCaptureTarget.Location = new System.Drawing.Point(117, 254);
+            this.keyCaptureTarget.Name = "keyCaptureTarget";
+            this.keyCaptureTarget.Size = new System.Drawing.Size(201, 24);
+            this.keyCaptureTarget.TabIndex = 6;
+            // 
+            // keyCaptureSource
+            // 
+            this.keyCaptureSource.Cursor = System.Windows.Forms.Cursors.Help;
+            this.keyCaptureSource.Location = new System.Drawing.Point(117, 204);
+            this.keyCaptureSource.Name = "keyCaptureSource";
+            this.keyCaptureSource.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.keyCaptureSource.Size = new System.Drawing.Size(201, 24);
+            this.keyCaptureSource.TabIndex = 5;
+            // 
             // tabPageHotkeys
             // 
             this.tabPageHotkeys.AutoScroll = true;
@@ -329,6 +352,14 @@
             this.btnAddHotkey.Text = "Agregar Hotkey";
             this.btnAddHotkey.UseVisualStyleBackColor = true;
             this.btnAddHotkey.Click += new System.EventHandler(this.btnAddHotkey_Click);
+            // 
+            // hotkeyCapture
+            // 
+            this.hotkeyCapture.Cursor = System.Windows.Forms.Cursors.Help;
+            this.hotkeyCapture.Location = new System.Drawing.Point(9, 60);
+            this.hotkeyCapture.Name = "hotkeyCapture";
+            this.hotkeyCapture.Size = new System.Drawing.Size(301, 24);
+            this.hotkeyCapture.TabIndex = 13;
             // 
             // btnBrowseProgram
             // 
@@ -482,6 +513,11 @@
             // 
             // tabPageConfig
             // 
+            this.tabPageConfig.Controls.Add(this.btnDeleteProfile);
+            this.tabPageConfig.Controls.Add(this.btnRenameProfile);
+            this.tabPageConfig.Controls.Add(this.btnNewProfile);
+            this.tabPageConfig.Controls.Add(this.cmbProfiles);
+            this.tabPageConfig.Controls.Add(this.lblProfile);
             this.tabPageConfig.Location = new System.Drawing.Point(4, 25);
             this.tabPageConfig.Name = "tabPageConfig";
             this.tabPageConfig.Size = new System.Drawing.Size(776, 532);
@@ -489,30 +525,54 @@
             this.tabPageConfig.Text = "Config";
             this.tabPageConfig.UseVisualStyleBackColor = true;
             // 
-            // keyCaptureTarget
+            // lblProfile
             // 
-            this.keyCaptureTarget.Cursor = System.Windows.Forms.Cursors.Help;
-            this.keyCaptureTarget.Location = new System.Drawing.Point(117, 254);
-            this.keyCaptureTarget.Name = "keyCaptureTarget";
-            this.keyCaptureTarget.Size = new System.Drawing.Size(201, 24);
-            this.keyCaptureTarget.TabIndex = 6;
+            this.lblProfile.AutoSize = true;
+            this.lblProfile.Location = new System.Drawing.Point(8, 10);
+            this.lblProfile.Name = "lblProfile";
+            this.lblProfile.Size = new System.Drawing.Size(79, 16);
+            this.lblProfile.TabIndex = 0;
+            this.lblProfile.Text = "Perfil activo:";
+            this.lblProfile.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // keyCaptureSource
+            // cmbProfiles
             // 
-            this.keyCaptureSource.Cursor = System.Windows.Forms.Cursors.Help;
-            this.keyCaptureSource.Location = new System.Drawing.Point(117, 204);
-            this.keyCaptureSource.Name = "keyCaptureSource";
-            this.keyCaptureSource.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.keyCaptureSource.Size = new System.Drawing.Size(201, 24);
-            this.keyCaptureSource.TabIndex = 5;
+            this.cmbProfiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbProfiles.FormattingEnabled = true;
+            this.cmbProfiles.Location = new System.Drawing.Point(93, 7);
+            this.cmbProfiles.Name = "cmbProfiles";
+            this.cmbProfiles.Size = new System.Drawing.Size(181, 24);
+            this.cmbProfiles.TabIndex = 1;
             // 
-            // hotkeyCapture
+            // btnNewProfile
             // 
-            this.hotkeyCapture.Cursor = System.Windows.Forms.Cursors.Help;
-            this.hotkeyCapture.Location = new System.Drawing.Point(9, 60);
-            this.hotkeyCapture.Name = "hotkeyCapture";
-            this.hotkeyCapture.Size = new System.Drawing.Size(301, 24);
-            this.hotkeyCapture.TabIndex = 13;
+            this.btnNewProfile.Location = new System.Drawing.Point(11, 50);
+            this.btnNewProfile.Name = "btnNewProfile";
+            this.btnNewProfile.Size = new System.Drawing.Size(75, 23);
+            this.btnNewProfile.TabIndex = 2;
+            this.btnNewProfile.Text = "Nuevo";
+            this.btnNewProfile.UseVisualStyleBackColor = true;
+            this.btnNewProfile.Click += new System.EventHandler(this.btnNewProfile_Click);
+            // 
+            // btnRenameProfile
+            // 
+            this.btnRenameProfile.Location = new System.Drawing.Point(93, 50);
+            this.btnRenameProfile.Name = "btnRenameProfile";
+            this.btnRenameProfile.Size = new System.Drawing.Size(100, 23);
+            this.btnRenameProfile.TabIndex = 3;
+            this.btnRenameProfile.Text = "Renombrar";
+            this.btnRenameProfile.UseVisualStyleBackColor = true;
+            this.btnRenameProfile.Click += new System.EventHandler(this.btnRenameProfile_Click);
+            // 
+            // btnDeleteProfile
+            // 
+            this.btnDeleteProfile.Location = new System.Drawing.Point(199, 50);
+            this.btnDeleteProfile.Name = "btnDeleteProfile";
+            this.btnDeleteProfile.Size = new System.Drawing.Size(75, 23);
+            this.btnDeleteProfile.TabIndex = 4;
+            this.btnDeleteProfile.Text = "Eliminar";
+            this.btnDeleteProfile.UseVisualStyleBackColor = true;
+            this.btnDeleteProfile.Click += new System.EventHandler(this.btnDeleteProfile_Click);
             // 
             // MainForm
             // 
@@ -537,6 +597,8 @@
             this.grpNewHotkey.PerformLayout();
             this.grpHotkeys.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvHotkeys)).EndInit();
+            this.tabPageConfig.ResumeLayout(false);
+            this.tabPageConfig.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -583,6 +645,11 @@
         private System.Windows.Forms.Label lblKH;
         private System.Windows.Forms.Button btnRemoveHotkey;
         private System.Windows.Forms.ToolTip toolTipKeyPress;
+        private System.Windows.Forms.Button btnNewProfile;
+        private System.Windows.Forms.ComboBox cmbProfiles;
+        private System.Windows.Forms.Label lblProfile;
+        private System.Windows.Forms.Button btnRenameProfile;
+        private System.Windows.Forms.Button btnDeleteProfile;
     }
 }
 

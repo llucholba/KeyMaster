@@ -9,9 +9,9 @@ namespace KeyMaster.Core
     {
         private readonly List<RemapRule> _rules;
 
-        public RemapManager()
+        public RemapManager(List<RemapRule> rules)
         {
-            _rules = new List<RemapRule>();
+            _rules = rules;
         }
 
         public IReadOnlyList<RemapRule> Rules

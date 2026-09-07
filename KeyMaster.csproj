@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,6 +53,7 @@
     <Compile Include="Core\KeyboardHook.cs" />
     <Compile Include="Core\KeyCatalog.cs" />
     <Compile Include="Core\KeySender.cs" />
+    <Compile Include="Core\ProfileManager.cs" />
     <Compile Include="Core\RemapListItem.cs" />
     <Compile Include="Core\RemapManager.cs" />
     <Compile Include="Forms\MainForm.cs">
@@ -69,6 +71,7 @@
     <Compile Include="Models\HotkeyAction.cs" />
     <Compile Include="Models\KeyboardEvent.cs" />
     <Compile Include="Models\KeyDefinition.cs" />
+    <Compile Include="Models\Profile.cs" />
     <Compile Include="Models\RemapRule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -14,10 +14,19 @@ namespace KeyMaster
 
         private RemapManager _remapManager;
 
-        private readonly List<HotkeyAction> _hotkeys = new List<HotkeyAction>();
+        //private readonly List<HotkeyAction> _hotkeys = new List<HotkeyAction>();
+        private List<HotkeyAction> _hotkeys
+        {
+            get
+            {
+                return _profileManager.ActiveProfile.Hotkeys;
+            }
+        }
 
         private readonly HashSet<Keys> _pressedKeys = new HashSet<Keys>();
         private readonly HashSet<HotkeyAction> _triggeredHotkeys = new HashSet<HotkeyAction>();
+
+        private ProfileManager _profileManager;
 
         public MainForm()
         {
@@ -26,11 +35,12 @@ namespace KeyMaster
             LoadKeys();
 
             _keyboardHook = new KeyboardHook();
-
             _keyboardHook.KeyDown += KeyboardHook_KeyDown;
             _keyboardHook.KeyUp += KeyboardHook_KeyUp;
 
-            _remapManager = new RemapManager();
+            _profileManager = new ProfileManager();
+            _remapManager = new RemapManager(_profileManager.ActiveProfile.Remaps);
+            RefreshProfileList();
 
             _keyboardHook.ShouldSuppressKey += ShouldSuppressKey;
 
@@ -476,6 +486,120 @@ namespace KeyMaster
             _hotkeys.RemoveAt(index);
 
             dgvHotkeys.Rows.RemoveAt(index);
+        }
+
+        private void RefreshProfileList()
+        {
+            cmbProfiles.DataSource = null;
+            cmbProfiles.DataSource = _profileManager.Profiles;
+            cmbProfiles.DisplayMember = "Name";
+
+            cmbProfiles.SelectedItem = _profileManager.ActiveProfile;
+        }
+
+        private void btnNewProfile_Click(object sender, EventArgs e)
+        {
+            string name = Microsoft.VisualBasic.Interaction.InputBox(
+                "Ingresá el nombre del nuevo perfil:",
+                "Nuevo perfil",
+                "Nuevo perfil");
+
+            if (string.IsNullOrWhiteSpace(name))
+                return;
+
+            name = name.Trim();
+
+            if (_profileManager.Profiles.Any(
+                p => p.Name.Equals(
+                    name,
+                    StringComparison.OrdinalIgnoreCase)))
+            {
+                MessageBox.Show(
+                    "Ya existe un perfil con ese nombre.",
+                    "Perfil",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
+            Profile profile = new Profile
+            {
+                Name = name
+            };
+
+            _profileManager.Profiles.Add(profile);
+
+            RefreshProfileList();
+        }
+
+        private void btnRenameProfile_Click(object sender, EventArgs e)
+        {
+            Profile profile = _profileManager.ActiveProfile;
+
+            string name = Microsoft.VisualBasic.Interaction.InputBox(
+                "Ingresá el nuevo nombre del perfil:",
+                "Renombrar perfil",
+                profile.Name);
+
+            if (string.IsNullOrWhiteSpace(name))
+                return;
+
+            name = name.Trim();
+
+            if (_profileManager.Profiles.Any(
+                p => p != profile &&
+                     p.Name.Equals(
+                         name,
+                         StringComparison.OrdinalIgnoreCase)))
+            {
+                MessageBox.Show(
+                    "Ya existe un perfil con ese nombre.",
+                    "Perfil",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
+            profile.Name = name;
+
+            RefreshProfileList();
+        }
+
+        private void btnDeleteProfile_Click(object sender, EventArgs e)
+        {
+            Profile profile = _profileManager.ActiveProfile;
+
+            if (_profileManager.Profiles.Count <= 1)
+            {
+                MessageBox.Show(
+                    "No se puede eliminar el último perfil.",
+                    "Perfil",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
+            DialogResult result = MessageBox.Show(
+                "¿Estás seguro de que querés eliminar el perfil \"" +
+                profile.Name +
+                "\"?",
+                "Eliminar perfil",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+                return;
+
+            _profileManager.Profiles.Remove(profile);
+
+            Profile newActiveProfile = _profileManager.Profiles[0];
+
+            _profileManager.SetActiveProfile(newActiveProfile);
+
+            RefreshProfileList();
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
