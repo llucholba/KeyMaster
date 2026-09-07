@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lblStatus = new System.Windows.Forms.Label();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
@@ -41,8 +42,7 @@
             this.btnRemoveRemap = new System.Windows.Forms.Button();
             this.tabControlKM = new System.Windows.Forms.TabControl();
             this.tabPageRemaps = new System.Windows.Forms.TabPage();
-            this.keyCaptureTarget = new KeyMaster.Controls.KeyCaptureControl();
-            this.keyCaptureSource = new KeyMaster.Controls.KeyCaptureControl();
+            this.lblKH = new System.Windows.Forms.Label();
             this.tabPageHotkeys = new System.Windows.Forms.TabPage();
             this.grpNewHotkey = new System.Windows.Forms.GroupBox();
             this.cmbTextMethod = new System.Windows.Forms.ComboBox();
@@ -50,7 +50,6 @@
             this.lblHotkeyText = new System.Windows.Forms.Label();
             this.txtHotkeyText = new System.Windows.Forms.TextBox();
             this.btnAddHotkey = new System.Windows.Forms.Button();
-            this.hotkeyCapture = new KeyMaster.Controls.HotkeyCaptureControl();
             this.btnBrowseProgram = new System.Windows.Forms.Button();
             this.lblHotkey = new System.Windows.Forms.Label();
             this.txtProgram = new System.Windows.Forms.TextBox();
@@ -58,6 +57,7 @@
             this.lblProgram = new System.Windows.Forms.Label();
             this.cmbAction = new System.Windows.Forms.ComboBox();
             this.grpHotkeys = new System.Windows.Forms.GroupBox();
+            this.btnRemoveHotkey = new System.Windows.Forms.Button();
             this.dgvHotkeys = new System.Windows.Forms.DataGridView();
             this.colHotkey = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colAction = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -65,7 +65,10 @@
             this.colEnabled = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPageScripts = new System.Windows.Forms.TabPage();
             this.tabPageConfig = new System.Windows.Forms.TabPage();
-            this.lblKH = new System.Windows.Forms.Label();
+            this.toolTipKeyPress = new System.Windows.Forms.ToolTip(this.components);
+            this.keyCaptureTarget = new KeyMaster.Controls.KeyCaptureControl();
+            this.keyCaptureSource = new KeyMaster.Controls.KeyCaptureControl();
+            this.hotkeyCapture = new KeyMaster.Controls.HotkeyCaptureControl();
             this.tabControlKM.SuspendLayout();
             this.tabPageRemaps.SuspendLayout();
             this.tabPageHotkeys.SuspendLayout();
@@ -112,12 +115,7 @@
             this.lstKeys.FormattingEnabled = true;
             this.lstKeys.ItemHeight = 16;
             this.lstKeys.Items.AddRange(new object[] {
-            "F1",
-            "F2",
-            "A",
-            "Ctrl",
-            "Shift",
-            "T"});
+            "Lista de entradas de teclas"});
             this.lstKeys.Location = new System.Drawing.Point(9, 79);
             this.lstKeys.Name = "lstKeys";
             this.lstKeys.Size = new System.Drawing.Size(309, 100);
@@ -165,9 +163,10 @@
             // 
             // btnAddRemap
             // 
-            this.btnAddRemap.Location = new System.Drawing.Point(101, 300);
+            this.btnAddRemap.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddRemap.Location = new System.Drawing.Point(86, 300);
             this.btnAddRemap.Name = "btnAddRemap";
-            this.btnAddRemap.Size = new System.Drawing.Size(125, 25);
+            this.btnAddRemap.Size = new System.Drawing.Size(150, 25);
             this.btnAddRemap.TabIndex = 7;
             this.btnAddRemap.Text = "Agregar remapeo";
             this.btnAddRemap.UseVisualStyleBackColor = true;
@@ -184,11 +183,12 @@
             // 
             // btnRemoveRemap
             // 
-            this.btnRemoveRemap.Location = new System.Drawing.Point(9, 488);
+            this.btnRemoveRemap.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRemoveRemap.Location = new System.Drawing.Point(86, 488);
             this.btnRemoveRemap.Name = "btnRemoveRemap";
             this.btnRemoveRemap.Size = new System.Drawing.Size(150, 25);
             this.btnRemoveRemap.TabIndex = 9;
-            this.btnRemoveRemap.Text = "Eliminar seleccionado";
+            this.btnRemoveRemap.Text = "Eliminar Remapeo";
             this.btnRemoveRemap.UseVisualStyleBackColor = true;
             this.btnRemoveRemap.Click += new System.EventHandler(this.btnRemoveRemap_Click);
             // 
@@ -230,21 +230,15 @@
             this.tabPageRemaps.Text = "Remapeos";
             this.tabPageRemaps.UseVisualStyleBackColor = true;
             // 
-            // keyCaptureTarget
+            // lblKH
             // 
-            this.keyCaptureTarget.Location = new System.Drawing.Point(117, 254);
-            this.keyCaptureTarget.Name = "keyCaptureTarget";
-            this.keyCaptureTarget.Size = new System.Drawing.Size(201, 24);
-            this.keyCaptureTarget.TabIndex = 6;
-            // 
-            // keyCaptureSource
-            // 
-            this.keyCaptureSource.Cursor = System.Windows.Forms.Cursors.Default;
-            this.keyCaptureSource.Location = new System.Drawing.Point(117, 204);
-            this.keyCaptureSource.Name = "keyCaptureSource";
-            this.keyCaptureSource.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.keyCaptureSource.Size = new System.Drawing.Size(201, 24);
-            this.keyCaptureSource.TabIndex = 5;
+            this.lblKH.AutoSize = true;
+            this.lblKH.Location = new System.Drawing.Point(73, 10);
+            this.lblKH.Name = "lblKH";
+            this.lblKH.Size = new System.Drawing.Size(102, 16);
+            this.lblKH.TabIndex = 10;
+            this.lblKH.Text = "Keyboard Hook";
+            this.lblKH.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tabPageHotkeys
             // 
@@ -282,6 +276,7 @@
             // 
             // cmbTextMethod
             // 
+            this.cmbTextMethod.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmbTextMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTextMethod.FormattingEnabled = true;
             this.cmbTextMethod.Items.AddRange(new object[] {
@@ -334,14 +329,6 @@
             this.btnAddHotkey.Text = "Agregar Hotkey";
             this.btnAddHotkey.UseVisualStyleBackColor = true;
             this.btnAddHotkey.Click += new System.EventHandler(this.btnAddHotkey_Click);
-            // 
-            // hotkeyCapture
-            // 
-            this.hotkeyCapture.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.hotkeyCapture.Location = new System.Drawing.Point(9, 60);
-            this.hotkeyCapture.Name = "hotkeyCapture";
-            this.hotkeyCapture.Size = new System.Drawing.Size(300, 24);
-            this.hotkeyCapture.TabIndex = 8;
             // 
             // btnBrowseProgram
             // 
@@ -399,13 +386,9 @@
             this.cmbAction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbAction.FormattingEnabled = true;
             this.cmbAction.Items.AddRange(new object[] {
-            "Abrir programa",
+            "Abrir programa o archivo",
             "Escribir texto",
-            "Abrir archivo",
-            "Abrir carpeta",
-            "Ejecutar comando",
-            "Copiar texto",
-            "Pegar texto"});
+            "Abrir carpeta (proximamente)"});
             this.cmbAction.Location = new System.Drawing.Point(456, 60);
             this.cmbAction.Name = "cmbAction";
             this.cmbAction.Size = new System.Drawing.Size(300, 24);
@@ -414,6 +397,7 @@
             // 
             // grpHotkeys
             // 
+            this.grpHotkeys.Controls.Add(this.btnRemoveHotkey);
             this.grpHotkeys.Controls.Add(this.dgvHotkeys);
             this.grpHotkeys.Location = new System.Drawing.Point(6, 262);
             this.grpHotkeys.Name = "grpHotkeys";
@@ -422,6 +406,17 @@
             this.grpHotkeys.TabIndex = 1;
             this.grpHotkeys.TabStop = false;
             this.grpHotkeys.Text = "Hotkeys configuradas";
+            // 
+            // btnRemoveHotkey
+            // 
+            this.btnRemoveHotkey.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRemoveHotkey.Location = new System.Drawing.Point(319, 233);
+            this.btnRemoveHotkey.Name = "btnRemoveHotkey";
+            this.btnRemoveHotkey.Size = new System.Drawing.Size(125, 23);
+            this.btnRemoveHotkey.TabIndex = 1;
+            this.btnRemoveHotkey.Text = "Eliminar Hotkey";
+            this.btnRemoveHotkey.UseVisualStyleBackColor = true;
+            this.btnRemoveHotkey.Click += new System.EventHandler(this.btnRemoveHotkey_Click);
             // 
             // dgvHotkeys
             // 
@@ -439,7 +434,7 @@
             this.dgvHotkeys.Name = "dgvHotkeys";
             this.dgvHotkeys.ReadOnly = true;
             this.dgvHotkeys.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvHotkeys.Size = new System.Drawing.Size(747, 231);
+            this.dgvHotkeys.Size = new System.Drawing.Size(747, 202);
             this.dgvHotkeys.TabIndex = 0;
             // 
             // colHotkey
@@ -494,15 +489,30 @@
             this.tabPageConfig.Text = "Config";
             this.tabPageConfig.UseVisualStyleBackColor = true;
             // 
-            // lblKH
+            // keyCaptureTarget
             // 
-            this.lblKH.AutoSize = true;
-            this.lblKH.Location = new System.Drawing.Point(73, 10);
-            this.lblKH.Name = "lblKH";
-            this.lblKH.Size = new System.Drawing.Size(102, 16);
-            this.lblKH.TabIndex = 10;
-            this.lblKH.Text = "Keyboard Hook";
-            this.lblKH.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.keyCaptureTarget.Cursor = System.Windows.Forms.Cursors.Help;
+            this.keyCaptureTarget.Location = new System.Drawing.Point(117, 254);
+            this.keyCaptureTarget.Name = "keyCaptureTarget";
+            this.keyCaptureTarget.Size = new System.Drawing.Size(201, 24);
+            this.keyCaptureTarget.TabIndex = 6;
+            // 
+            // keyCaptureSource
+            // 
+            this.keyCaptureSource.Cursor = System.Windows.Forms.Cursors.Help;
+            this.keyCaptureSource.Location = new System.Drawing.Point(117, 204);
+            this.keyCaptureSource.Name = "keyCaptureSource";
+            this.keyCaptureSource.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.keyCaptureSource.Size = new System.Drawing.Size(201, 24);
+            this.keyCaptureSource.TabIndex = 5;
+            // 
+            // hotkeyCapture
+            // 
+            this.hotkeyCapture.Cursor = System.Windows.Forms.Cursors.Help;
+            this.hotkeyCapture.Location = new System.Drawing.Point(9, 60);
+            this.hotkeyCapture.Name = "hotkeyCapture";
+            this.hotkeyCapture.Size = new System.Drawing.Size(301, 24);
+            this.hotkeyCapture.TabIndex = 13;
             // 
             // MainForm
             // 
@@ -571,6 +581,8 @@
         private System.Windows.Forms.Label lblTextMethod;
         private System.Windows.Forms.ComboBox cmbTextMethod;
         private System.Windows.Forms.Label lblKH;
+        private System.Windows.Forms.Button btnRemoveHotkey;
+        private System.Windows.Forms.ToolTip toolTipKeyPress;
     }
 }
 

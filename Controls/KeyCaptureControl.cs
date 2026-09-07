@@ -45,6 +45,12 @@ namespace KeyMaster.Controls
             Controls.Add(_button);
         }
 
+        public void SetToolTipKCC(ToolTip toolTip, string message)
+        {
+            toolTip.SetToolTip(this, message);
+            toolTip.SetToolTip(_button, message);
+        }
+
         private void Button_Click(object sender, EventArgs e)
         {
             if (_ignoreNextClick)

@@ -1,4 +1,5 @@
-﻿using KeyMaster.Core;
+﻿using KeyMaster.Controls;
+using KeyMaster.Core;
 using KeyMaster.Models;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,8 @@ namespace KeyMaster
         {
             keyCaptureSource.KeyCaptured += KeyCaptureSource_KeyCaptured;
             keyCaptureTarget.KeyCaptured += KeyCaptureTarget_KeyCaptured;
+
+            ConfigureKeyCaptureTooltips();
         }
         private void KeyCaptureSource_KeyCaptured(object sender, EventArgs e)
         {
@@ -55,6 +58,16 @@ namespace KeyMaster
             Keys key = keyCaptureTarget.SelectedKey;
 
             System.Diagnostics.Debug.WriteLine("Target: " + key);
+        }
+
+        private void ConfigureKeyCaptureTooltips()
+        {
+            string ttKeyPress = "Click Izquierdo del mouse y presionar tecla para asignar.\n" +
+                                "Click Derecho del mouse para cancelar asignación.";
+
+            keyCaptureSource.SetToolTipKCC(toolTipKeyPress, ttKeyPress);
+            keyCaptureTarget.SetToolTipKCC(toolTipKeyPress, ttKeyPress);
+            hotkeyCapture.SetToolTipHCC(toolTipKeyPress, ttKeyPress);
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -144,7 +157,7 @@ namespace KeyMaster
         }
         private void ExecuteHotkey(HotkeyAction hotkey)
         {
-            if (hotkey.Action == "Abrir programa")
+            if (hotkey.Action == "Abrir programa o archivo")
             {
                 try
                 {
@@ -153,7 +166,7 @@ namespace KeyMaster
                 catch (Exception ex)
                 {
                     MessageBox.Show(
-                        "No se pudo abrir el programa.\n\n" +
+                        "No se pudo abrir el programa o archivo.\n\n" +
                         ex.Message,
                         "Hotkey",
                         MessageBoxButtons.OK,
@@ -277,6 +290,15 @@ namespace KeyMaster
 
             RemapRule rule = (RemapRule)lstRemaps.SelectedItem;
 
+            DialogResult result = MessageBox.Show(
+                "¿Estás seguro de que querés eliminar este remapeo?",
+                "Eliminar remapeo",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+                return;
+
             _remapManager.RemoveRule(rule.Source);
 
             RefreshRemapList();
@@ -326,12 +348,12 @@ namespace KeyMaster
             string configuration = "";
             string textMethod = "";
 
-            if (action == "Abrir programa")
+            if (action == "Abrir programa o archivo")
             {
                 if (string.IsNullOrWhiteSpace(txtProgram.Text))
                 {
                     MessageBox.Show(
-                        "Seleccioná un programa.",
+                        "Seleccioná un programa o archivo.",
                         "Hotkey",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
@@ -545,7 +567,7 @@ namespace KeyMaster
 
             string action = cmbAction.SelectedItem.ToString();
 
-            bool isProgram = action == "Abrir programa";
+            bool isProgram = action == "Abrir programa o archivo";
 
             bool isText = action == "Escribir texto";
 
@@ -564,6 +586,30 @@ namespace KeyMaster
         {
             if (cmbTextMethod.SelectedItem == null)
                 return;
+        }
+
+        private void btnRemoveHotkey_Click(object sender, EventArgs e)
+        {
+            if (dgvHotkeys.SelectedRows.Count == 0)
+                return;
+
+            int index = dgvHotkeys.SelectedRows[0].Index;
+
+            if (index < 0 || index >= _hotkeys.Count)
+                return;
+
+            DialogResult result = MessageBox.Show(
+                "¿Estás seguro de que querés eliminar esta hotkey?",
+                "Eliminar hotkey",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+                return;
+
+            _hotkeys.RemoveAt(index);
+
+            dgvHotkeys.Rows.RemoveAt(index);
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
