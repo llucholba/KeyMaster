@@ -164,6 +164,36 @@ namespace KeyMaster.Core
             }
         }
 
+        public ProfilePackage ImportAllProfiles(string filePath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+                return null;
+
+            if (!File.Exists(filePath))
+                return null;
+
+            try
+            {
+                string json =
+                    File.ReadAllText(
+                        filePath,
+                        Encoding.UTF8);
+
+                var serializer = new JavaScriptSerializer();
+
+                ProfilePackage package = serializer.Deserialize<ProfilePackage>(json);
+
+                if (package == null)
+                    return null;
+
+                return package;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public Profile LoadProfile(string filePath)
         {
             if (!File.Exists(filePath))

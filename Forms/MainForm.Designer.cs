@@ -34,9 +34,7 @@
             this.btnStop = new System.Windows.Forms.Button();
             this.lstKeys = new System.Windows.Forms.ListBox();
             this.lblSource = new System.Windows.Forms.Label();
-            this.cmbSource = new System.Windows.Forms.ComboBox();
             this.lblTarget = new System.Windows.Forms.Label();
-            this.cmbTarget = new System.Windows.Forms.ComboBox();
             this.btnAddRemap = new System.Windows.Forms.Button();
             this.lstRemaps = new System.Windows.Forms.ListBox();
             this.btnRemoveRemap = new System.Windows.Forms.Button();
@@ -117,6 +115,7 @@
             // btnStop
             // 
             this.btnStop.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnStop.Enabled = false;
             this.btnStop.Location = new System.Drawing.Point(248, 37);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(70, 23);
@@ -146,16 +145,6 @@
             this.lblSource.Text = "Tecla Deseada:";
             this.lblSource.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // cmbSource
-            // 
-            this.cmbSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSource.FormattingEnabled = true;
-            this.cmbSource.Location = new System.Drawing.Point(117, 180);
-            this.cmbSource.Name = "cmbSource";
-            this.cmbSource.Size = new System.Drawing.Size(201, 24);
-            this.cmbSource.TabIndex = 5;
-            this.cmbSource.Visible = false;
-            // 
             // lblTarget
             // 
             this.lblTarget.AutoSize = true;
@@ -165,16 +154,6 @@
             this.lblTarget.TabIndex = 6;
             this.lblTarget.Text = "Reemplaza a:";
             this.lblTarget.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // cmbTarget
-            // 
-            this.cmbTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTarget.FormattingEnabled = true;
-            this.cmbTarget.Location = new System.Drawing.Point(117, 228);
-            this.cmbTarget.Name = "cmbTarget";
-            this.cmbTarget.Size = new System.Drawing.Size(201, 24);
-            this.cmbTarget.TabIndex = 7;
-            this.cmbTarget.Visible = false;
             // 
             // btnAddRemap
             // 
@@ -234,9 +213,7 @@
             this.tabPageRemaps.Controls.Add(this.btnStop);
             this.tabPageRemaps.Controls.Add(this.lstKeys);
             this.tabPageRemaps.Controls.Add(this.lblTarget);
-            this.tabPageRemaps.Controls.Add(this.cmbTarget);
             this.tabPageRemaps.Controls.Add(this.lblSource);
-            this.tabPageRemaps.Controls.Add(this.cmbSource);
             this.tabPageRemaps.Location = new System.Drawing.Point(4, 25);
             this.tabPageRemaps.Name = "tabPageRemaps";
             this.tabPageRemaps.Padding = new System.Windows.Forms.Padding(3);
@@ -705,9 +682,7 @@
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.ListBox lstKeys;
         private System.Windows.Forms.Label lblSource;
-        private System.Windows.Forms.ComboBox cmbSource;
         private System.Windows.Forms.Label lblTarget;
-        private System.Windows.Forms.ComboBox cmbTarget;
         private System.Windows.Forms.Button btnAddRemap;
         private System.Windows.Forms.ListBox lstRemaps;
         private System.Windows.Forms.Button btnRemoveRemap;

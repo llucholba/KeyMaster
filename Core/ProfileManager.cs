@@ -211,6 +211,57 @@ namespace KeyMaster.Core
             return true;
         }
 
+        public int ImportAllProfiles(ProfilePackage package, List<string> skippedProfiles, List<string> importedProfiles)
+        {
+            if (package == null)
+                return 0;
+
+            if (package.FormatVersion != 1)
+                return 0;
+
+            if (package.Profiles == null)
+                return 0;
+
+            int importedCount = 0;
+
+            foreach (Profile profile in package.Profiles)
+            {
+                if (profile == null)
+                    continue;
+
+                if (string.IsNullOrWhiteSpace(profile.Name))
+                    continue;
+
+                profile.Name = profile.Name.Trim();
+
+                bool exists =
+                    Profiles.Any(
+                        existingProfile =>
+                            existingProfile.Name.Equals(
+                                profile.Name,
+                                System.StringComparison.OrdinalIgnoreCase));
+
+                if (exists)
+                {
+                    if (skippedProfiles != null)
+                        skippedProfiles.Add(profile.Name);
+
+                    continue;
+                }
+
+                Profiles.Add(profile);
+
+                _storage.SaveProfile(profile);
+
+                if (importedProfiles != null)
+                    importedProfiles.Add(profile.Name);
+
+                importedCount++;
+            }
+
+            return importedCount;
+        }
+
         public string ActiveProfileName
         {
             get

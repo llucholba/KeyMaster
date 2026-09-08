@@ -33,8 +33,6 @@ namespace KeyMaster
         {
             InitializeComponent();
 
-            LoadKeys();
-
             _keyboardHook = new KeyboardHook();
             _keyboardHook.KeyDown += KeyboardHook_KeyDown;
             _keyboardHook.KeyUp += KeyboardHook_KeyUp;
@@ -96,6 +94,9 @@ namespace KeyMaster
                 lblStatus.ForeColor = System.Drawing.Color.Green;
                 lblStatus.Font = new System.Drawing.Font(lblKH.Font, System.Drawing.FontStyle.Bold);
                 lblStatus.Padding = new Padding(10, 0, 0, 0);
+
+                btnStart.Enabled = false;
+                btnStop.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -117,6 +118,9 @@ namespace KeyMaster
             lblStatus.ForeColor = System.Drawing.Color.Red;
             lblStatus.Font = new System.Drawing.Font(lblKH.Font, System.Drawing.FontStyle.Regular);
             lblStatus.Padding = new Padding(0, 0, 0, 0);
+
+            btnStop.Enabled = false;
+            btnStart.Enabled = true;
         }
 
         private void KeyboardHook_KeyDown(object sender, KeyEventArgs e)
@@ -235,19 +239,6 @@ namespace KeyMaster
             }
 
             return false;
-        }
-
-        private void LoadKeys()
-        {
-            var keys = KeyCatalog.GetKeys();
-
-            cmbSource.DataSource = new List<KeyDefinition>(keys);
-            cmbSource.DisplayMember = "DisplayName";
-            cmbSource.ValueMember = "Key";
-
-            cmbTarget.DataSource = new List<KeyDefinition>(keys);
-            cmbTarget.DisplayMember = "DisplayName";
-            cmbTarget.ValueMember = "Key";
         }
 
         private void btnAddRemap_Click(object sender, EventArgs e)
@@ -851,7 +842,109 @@ namespace KeyMaster
 
         private void btnImportAllProfiles_Click(object sender, EventArgs e)
         {
+            using (OpenFileDialog dialog = new OpenFileDialog())
+            {
+                dialog.Title = "Importar todos los perfiles";
 
+                dialog.Filter = "Respaldo de KeyMaster (*.json)|*.json";
+
+                dialog.Multiselect = false;
+
+                if (dialog.ShowDialog() != DialogResult.OK)
+                    return;
+
+                try
+                {
+                    ProfileStorage storage = new ProfileStorage();
+
+                    ProfilePackage package =
+                        storage.ImportAllProfiles(
+                            dialog.FileName);
+
+                    if (package == null)
+                    {
+                        MessageBox.Show(
+                            "El archivo no contiene un respaldo válido.",
+                            "Importar perfiles",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+
+                        return;
+                    }
+
+                    if (package.FormatVersion != 1)
+                    {
+                        MessageBox.Show(
+                            "La versión del respaldo no es compatible.",
+                            "Importar perfiles",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+
+                        return;
+                    }
+
+                    List<string> skippedProfiles = new List<string>();
+
+                    List<string> importedProfiles = new List<string>();
+
+                    int importedCount =
+                        _profileManager.ImportAllProfiles(
+                            package,
+                            skippedProfiles,
+                            importedProfiles);
+
+                    RefreshProfileList();
+
+                    string message = "";
+
+                    if (importedProfiles.Count > 0)
+                    {
+                        message +=
+                            "Perfiles agregados: " +
+                            importedProfiles.Count +
+                            "\n\n" +
+                            string.Join(
+                                "\n",
+                                importedProfiles);
+                    }
+
+                    if (skippedProfiles.Count > 0)
+                    {
+                        if (message.Length > 0)
+                            message += "\n\n";
+
+                        message +=
+                            "Perfiles omitidos porque ya existían: " +
+                            skippedProfiles.Count +
+                            "\n\n" +
+                            string.Join(
+                                "\n",
+                                skippedProfiles);
+                    }
+
+                    if (importedProfiles.Count == 0 &&
+                        skippedProfiles.Count == 0)
+                    {
+                        message =
+                            "No se importaron perfiles.";
+                    }
+
+                    MessageBox.Show(
+                        message,
+                        "Importar perfiles",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        "No se pudieron importar los perfiles.\n\n" +
+                        ex.Message,
+                        "Importar perfiles",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
