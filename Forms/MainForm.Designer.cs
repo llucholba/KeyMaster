@@ -68,11 +68,18 @@
             this.colEnabled = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPageScripts = new System.Windows.Forms.TabPage();
             this.tabPageConfig = new System.Windows.Forms.TabPage();
-            this.btnDeleteProfile = new System.Windows.Forms.Button();
-            this.btnRenameProfile = new System.Windows.Forms.Button();
-            this.btnNewProfile = new System.Windows.Forms.Button();
+            this.grpImportExportProfiles = new System.Windows.Forms.GroupBox();
+            this.btnImportAllProfiles = new System.Windows.Forms.Button();
+            this.lblCurrentProfile = new System.Windows.Forms.Label();
+            this.btnExportAllProfiles = new System.Windows.Forms.Button();
+            this.btnExportProfile = new System.Windows.Forms.Button();
+            this.lblAllProfiles = new System.Windows.Forms.Label();
+            this.btnImportProfile = new System.Windows.Forms.Button();
+            this.grpProfileManagement = new System.Windows.Forms.GroupBox();
             this.cmbProfiles = new System.Windows.Forms.ComboBox();
-            this.lblProfile = new System.Windows.Forms.Label();
+            this.btnDeleteProfile = new System.Windows.Forms.Button();
+            this.btnNewProfile = new System.Windows.Forms.Button();
+            this.btnRenameProfile = new System.Windows.Forms.Button();
             this.toolTipKeyPress = new System.Windows.Forms.ToolTip(this.components);
             this.tabControlKM.SuspendLayout();
             this.tabPageRemaps.SuspendLayout();
@@ -81,6 +88,8 @@
             this.grpHotkeys.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHotkeys)).BeginInit();
             this.tabPageConfig.SuspendLayout();
+            this.grpImportExportProfiles.SuspendLayout();
+            this.grpProfileManagement.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblStatus
@@ -513,11 +522,8 @@
             // 
             // tabPageConfig
             // 
-            this.tabPageConfig.Controls.Add(this.btnDeleteProfile);
-            this.tabPageConfig.Controls.Add(this.btnRenameProfile);
-            this.tabPageConfig.Controls.Add(this.btnNewProfile);
-            this.tabPageConfig.Controls.Add(this.cmbProfiles);
-            this.tabPageConfig.Controls.Add(this.lblProfile);
+            this.tabPageConfig.Controls.Add(this.grpImportExportProfiles);
+            this.tabPageConfig.Controls.Add(this.grpProfileManagement);
             this.tabPageConfig.Location = new System.Drawing.Point(4, 25);
             this.tabPageConfig.Name = "tabPageConfig";
             this.tabPageConfig.Size = new System.Drawing.Size(776, 532);
@@ -525,10 +531,113 @@
             this.tabPageConfig.Text = "Config";
             this.tabPageConfig.UseVisualStyleBackColor = true;
             // 
+            // grpImportExportProfiles
+            // 
+            this.grpImportExportProfiles.Controls.Add(this.btnImportAllProfiles);
+            this.grpImportExportProfiles.Controls.Add(this.lblCurrentProfile);
+            this.grpImportExportProfiles.Controls.Add(this.btnExportAllProfiles);
+            this.grpImportExportProfiles.Controls.Add(this.btnExportProfile);
+            this.grpImportExportProfiles.Controls.Add(this.lblAllProfiles);
+            this.grpImportExportProfiles.Controls.Add(this.btnImportProfile);
+            this.grpImportExportProfiles.Location = new System.Drawing.Point(6, 110);
+            this.grpImportExportProfiles.Name = "grpImportExportProfiles";
+            this.grpImportExportProfiles.Size = new System.Drawing.Size(274, 164);
+            this.grpImportExportProfiles.TabIndex = 6;
+            this.grpImportExportProfiles.TabStop = false;
+            this.grpImportExportProfiles.Text = "IMPORTAR / EXPORTAR";
+            // 
+            // btnImportAllProfiles
+            // 
+            this.btnImportAllProfiles.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnImportAllProfiles.Location = new System.Drawing.Point(153, 135);
+            this.btnImportAllProfiles.Name = "btnImportAllProfiles";
+            this.btnImportAllProfiles.Size = new System.Drawing.Size(115, 23);
+            this.btnImportAllProfiles.TabIndex = 11;
+            this.btnImportAllProfiles.Text = "Importar todos";
+            this.btnImportAllProfiles.UseVisualStyleBackColor = true;
+            this.btnImportAllProfiles.Click += new System.EventHandler(this.btnImportAllProfiles_Click);
+            // 
+            // lblCurrentProfile
+            // 
+            this.lblCurrentProfile.AutoSize = true;
+            this.lblCurrentProfile.Location = new System.Drawing.Point(98, 30);
+            this.lblCurrentProfile.Name = "lblCurrentProfile";
+            this.lblCurrentProfile.Size = new System.Drawing.Size(79, 16);
+            this.lblCurrentProfile.TabIndex = 0;
+            this.lblCurrentProfile.Text = "Perfil actual:";
+            this.lblCurrentProfile.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnExportAllProfiles
+            // 
+            this.btnExportAllProfiles.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnExportAllProfiles.Location = new System.Drawing.Point(6, 135);
+            this.btnExportAllProfiles.Name = "btnExportAllProfiles";
+            this.btnExportAllProfiles.Size = new System.Drawing.Size(115, 23);
+            this.btnExportAllProfiles.TabIndex = 10;
+            this.btnExportAllProfiles.Text = "Exportar todos";
+            this.btnExportAllProfiles.UseVisualStyleBackColor = true;
+            this.btnExportAllProfiles.Click += new System.EventHandler(this.btnExportAllProfiles_Click);
+            // 
+            // btnExportProfile
+            // 
+            this.btnExportProfile.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnExportProfile.Location = new System.Drawing.Point(6, 54);
+            this.btnExportProfile.Name = "btnExportProfile";
+            this.btnExportProfile.Size = new System.Drawing.Size(75, 23);
+            this.btnExportProfile.TabIndex = 7;
+            this.btnExportProfile.Text = "Exportar";
+            this.btnExportProfile.UseVisualStyleBackColor = true;
+            this.btnExportProfile.Click += new System.EventHandler(this.btnExportProfile_Click);
+            // 
+            // lblAllProfiles
+            // 
+            this.lblAllProfiles.AutoSize = true;
+            this.lblAllProfiles.Location = new System.Drawing.Point(80, 110);
+            this.lblAllProfiles.Name = "lblAllProfiles";
+            this.lblAllProfiles.Size = new System.Drawing.Size(115, 16);
+            this.lblAllProfiles.TabIndex = 9;
+            this.lblAllProfiles.Text = "Todos los perfiles";
+            this.lblAllProfiles.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnImportProfile
+            // 
+            this.btnImportProfile.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnImportProfile.Location = new System.Drawing.Point(193, 54);
+            this.btnImportProfile.Name = "btnImportProfile";
+            this.btnImportProfile.Size = new System.Drawing.Size(75, 23);
+            this.btnImportProfile.TabIndex = 8;
+            this.btnImportProfile.Text = "Importar";
+            this.btnImportProfile.UseVisualStyleBackColor = true;
+            this.btnImportProfile.Click += new System.EventHandler(this.btnImportProfile_Click);
+            // 
+            // grpProfileManagement
+            // 
+            this.grpProfileManagement.Controls.Add(this.cmbProfiles);
+            this.grpProfileManagement.Controls.Add(this.btnDeleteProfile);
+            this.grpProfileManagement.Controls.Add(this.btnNewProfile);
+            this.grpProfileManagement.Controls.Add(this.btnRenameProfile);
+            this.grpProfileManagement.Location = new System.Drawing.Point(6, 6);
+            this.grpProfileManagement.Name = "grpProfileManagement";
+            this.grpProfileManagement.Size = new System.Drawing.Size(274, 85);
+            this.grpProfileManagement.TabIndex = 5;
+            this.grpProfileManagement.TabStop = false;
+            this.grpProfileManagement.Text = "PERFIL";
+            // 
+            // cmbProfiles
+            // 
+            this.cmbProfiles.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmbProfiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbProfiles.FormattingEnabled = true;
+            this.cmbProfiles.Location = new System.Drawing.Point(6, 21);
+            this.cmbProfiles.Name = "cmbProfiles";
+            this.cmbProfiles.Size = new System.Drawing.Size(262, 24);
+            this.cmbProfiles.TabIndex = 1;
+            this.cmbProfiles.SelectedIndexChanged += new System.EventHandler(this.cmbProfiles_SelectedIndexChanged);
+            // 
             // btnDeleteProfile
             // 
             this.btnDeleteProfile.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnDeleteProfile.Location = new System.Drawing.Point(199, 50);
+            this.btnDeleteProfile.Location = new System.Drawing.Point(193, 56);
             this.btnDeleteProfile.Name = "btnDeleteProfile";
             this.btnDeleteProfile.Size = new System.Drawing.Size(75, 23);
             this.btnDeleteProfile.TabIndex = 4;
@@ -536,21 +645,10 @@
             this.btnDeleteProfile.UseVisualStyleBackColor = true;
             this.btnDeleteProfile.Click += new System.EventHandler(this.btnDeleteProfile_Click);
             // 
-            // btnRenameProfile
-            // 
-            this.btnRenameProfile.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRenameProfile.Location = new System.Drawing.Point(93, 50);
-            this.btnRenameProfile.Name = "btnRenameProfile";
-            this.btnRenameProfile.Size = new System.Drawing.Size(100, 23);
-            this.btnRenameProfile.TabIndex = 3;
-            this.btnRenameProfile.Text = "Renombrar";
-            this.btnRenameProfile.UseVisualStyleBackColor = true;
-            this.btnRenameProfile.Click += new System.EventHandler(this.btnRenameProfile_Click);
-            // 
             // btnNewProfile
             // 
             this.btnNewProfile.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnNewProfile.Location = new System.Drawing.Point(11, 50);
+            this.btnNewProfile.Location = new System.Drawing.Point(6, 56);
             this.btnNewProfile.Name = "btnNewProfile";
             this.btnNewProfile.Size = new System.Drawing.Size(75, 23);
             this.btnNewProfile.TabIndex = 2;
@@ -558,26 +656,16 @@
             this.btnNewProfile.UseVisualStyleBackColor = true;
             this.btnNewProfile.Click += new System.EventHandler(this.btnNewProfile_Click);
             // 
-            // cmbProfiles
+            // btnRenameProfile
             // 
-            this.cmbProfiles.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmbProfiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbProfiles.FormattingEnabled = true;
-            this.cmbProfiles.Location = new System.Drawing.Point(93, 7);
-            this.cmbProfiles.Name = "cmbProfiles";
-            this.cmbProfiles.Size = new System.Drawing.Size(181, 24);
-            this.cmbProfiles.TabIndex = 1;
-            this.cmbProfiles.SelectedIndexChanged += new System.EventHandler(this.cmbProfiles_SelectedIndexChanged);
-            // 
-            // lblProfile
-            // 
-            this.lblProfile.AutoSize = true;
-            this.lblProfile.Location = new System.Drawing.Point(8, 10);
-            this.lblProfile.Name = "lblProfile";
-            this.lblProfile.Size = new System.Drawing.Size(79, 16);
-            this.lblProfile.TabIndex = 0;
-            this.lblProfile.Text = "Perfil actual:";
-            this.lblProfile.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnRenameProfile.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRenameProfile.Location = new System.Drawing.Point(87, 56);
+            this.btnRenameProfile.Name = "btnRenameProfile";
+            this.btnRenameProfile.Size = new System.Drawing.Size(100, 23);
+            this.btnRenameProfile.TabIndex = 3;
+            this.btnRenameProfile.Text = "Renombrar";
+            this.btnRenameProfile.UseVisualStyleBackColor = true;
+            this.btnRenameProfile.Click += new System.EventHandler(this.btnRenameProfile_Click);
             // 
             // MainForm
             // 
@@ -603,7 +691,9 @@
             this.grpHotkeys.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvHotkeys)).EndInit();
             this.tabPageConfig.ResumeLayout(false);
-            this.tabPageConfig.PerformLayout();
+            this.grpImportExportProfiles.ResumeLayout(false);
+            this.grpImportExportProfiles.PerformLayout();
+            this.grpProfileManagement.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -652,9 +742,16 @@
         private System.Windows.Forms.ToolTip toolTipKeyPress;
         private System.Windows.Forms.Button btnNewProfile;
         private System.Windows.Forms.ComboBox cmbProfiles;
-        private System.Windows.Forms.Label lblProfile;
+        private System.Windows.Forms.Label lblCurrentProfile;
         private System.Windows.Forms.Button btnRenameProfile;
         private System.Windows.Forms.Button btnDeleteProfile;
+        private System.Windows.Forms.GroupBox grpProfileManagement;
+        private System.Windows.Forms.GroupBox grpImportExportProfiles;
+        private System.Windows.Forms.Button btnImportProfile;
+        private System.Windows.Forms.Button btnExportProfile;
+        private System.Windows.Forms.Button btnImportAllProfiles;
+        private System.Windows.Forms.Button btnExportAllProfiles;
+        private System.Windows.Forms.Label lblAllProfiles;
     }
 }
 

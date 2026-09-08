@@ -681,6 +681,70 @@ namespace KeyMaster
             ChangeActiveProfile(profile);
         }
 
+        private void btnExportProfile_Click(object sender, EventArgs e)
+        {
+            Profile profile = _profileManager.ActiveProfile;
+
+            if (profile == null)
+                return;
+
+            using (SaveFileDialog dialog = new SaveFileDialog())
+            {
+                dialog.Title = "Exportar perfil";
+
+                dialog.Filter = "Perfil de KeyMaster (*.json)|*.json";
+
+                dialog.FileName = profile.Name + ".json";
+
+                dialog.AddExtension = true;
+                dialog.DefaultExt = "json";
+
+                if (dialog.ShowDialog() != DialogResult.OK)
+                    return;
+
+                try
+                {
+                    ProfileStorage storage = new ProfileStorage();
+
+                    storage.ExportProfile(
+                        profile,
+                        dialog.FileName);
+
+                    MessageBox.Show(
+                        "El perfil \"" +
+                        profile.Name +
+                        "\" fue exportado correctamente.",
+                        "Exportar perfil",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        "No se pudo exportar el perfil.\n\n" +
+                        ex.Message,
+                        "Exportar perfil",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btnImportProfile_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnExportAllProfiles_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnImportAllProfiles_Click(object sender, EventArgs e)
+        {
+
+        }
+
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
             _keyboardHook?.Dispose();

@@ -97,6 +97,24 @@ namespace KeyMaster.Core
                 Encoding.UTF8);
         }
 
+        public void ExportProfile(Profile profile, string filePath)
+        {
+            if (profile == null)
+                return;
+
+            if (string.IsNullOrWhiteSpace(filePath))
+                return;
+
+            var serializer = new JavaScriptSerializer();
+
+            string json = serializer.Serialize(profile);
+
+            File.WriteAllText(
+                filePath,
+                json,
+                Encoding.UTF8);
+        }
+
         public Profile LoadProfile(string filePath)
         {
             if (!File.Exists(filePath))
