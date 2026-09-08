@@ -732,7 +732,76 @@ namespace KeyMaster
 
         private void btnImportProfile_Click(object sender, EventArgs e)
         {
+            using (OpenFileDialog dialog = new OpenFileDialog())
+            {
+                dialog.Title = "Importar perfil";
 
+                dialog.Filter = "Perfil de KeyMaster (*.json)|*.json";
+
+                dialog.Multiselect = false;
+
+                if (dialog.ShowDialog() != DialogResult.OK)
+                    return;
+
+                try
+                {
+                    ProfileStorage storage = new ProfileStorage();
+
+                    Profile profile =
+                        storage.ImportProfile(
+                            dialog.FileName);
+
+                    if (profile == null)
+                    {
+                        MessageBox.Show(
+                            "El archivo no contiene un perfil válido.",
+                            "Importar perfil",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+
+                        return;
+                    }
+
+                    bool imported =
+                        _profileManager.ImportProfile(
+                            profile);
+
+                    if (!imported)
+                    {
+                        MessageBox.Show(
+                            "Ya existe un perfil con el nombre \"" +
+                            profile.Name +
+                            "\".\n\n" +
+                            "El perfil no fue importado.",
+                            "Importar perfil",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+
+                        return;
+                    }
+
+                    ChangeActiveProfile(profile);
+
+                    RefreshProfileList();
+
+                    MessageBox.Show(
+                        "El perfil \"" +
+                        profile.Name +
+                        "\" fue importado correctamente.",
+                        "Importar perfil",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        "No se pudo importar el perfil.\n\n" +
+                        ex.Message,
+                        "Importar perfil",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void btnExportAllProfiles_Click(object sender, EventArgs e)

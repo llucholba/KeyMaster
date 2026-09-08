@@ -125,7 +125,21 @@ namespace KeyMaster.Core
 
             if (ActiveProfile == profile)
             {
-                ActiveProfile = Profiles[0];
+                Profile globalProfile =
+                    Profiles.FirstOrDefault(
+                        p => !string.IsNullOrWhiteSpace(p.Name) &&
+                             p.Name.Equals(
+                                 "Global",
+                                 System.StringComparison.OrdinalIgnoreCase));
+
+                if (globalProfile != null)
+                {
+                    ActiveProfile = globalProfile;
+                }
+                else
+                {
+                    ActiveProfile = Profiles[0];
+                }
             }
         }
 
@@ -162,6 +176,37 @@ namespace KeyMaster.Core
             _storage.DeleteProfileByName(oldName);
 
             _storage.SaveProfile(profile);
+
+            return true;
+        }
+
+        public bool ImportProfile(Profile profile)
+        {
+            if (profile == null)
+                return false;
+
+            if (string.IsNullOrWhiteSpace(profile.Name))
+                return false;
+
+            profile.Name = profile.Name.Trim();
+
+            foreach (Profile existingProfile in Profiles)
+            {
+                if (existingProfile.Name.Equals(
+                    profile.Name,
+                    System.StringComparison.OrdinalIgnoreCase))
+                {
+                    return false;
+                }
+            }
+
+            Profiles.Add(profile);
+
+            _storage.SaveProfile(profile);
+
+            SetActiveProfile(profile);
+
+            SaveActiveProfileSetting();
 
             return true;
         }

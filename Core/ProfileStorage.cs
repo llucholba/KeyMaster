@@ -115,6 +115,31 @@ namespace KeyMaster.Core
                 Encoding.UTF8);
         }
 
+        public Profile ImportProfile(string filePath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+                return null;
+
+            if (!File.Exists(filePath))
+                return null;
+
+            try
+            {
+                string json =
+                    File.ReadAllText(
+                        filePath,
+                        Encoding.UTF8);
+
+                var serializer = new JavaScriptSerializer();
+
+                return serializer.Deserialize<Profile>(json);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public Profile LoadProfile(string filePath)
         {
             if (!File.Exists(filePath))
