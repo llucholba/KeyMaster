@@ -36,6 +36,7 @@
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,6 +55,7 @@
     <Compile Include="Core\KeyCatalog.cs" />
     <Compile Include="Core\KeySender.cs" />
     <Compile Include="Core\ProfileManager.cs" />
+    <Compile Include="Core\ProfileStorage.cs" />
     <Compile Include="Core\RemapListItem.cs" />
     <Compile Include="Core\RemapManager.cs" />
     <Compile Include="Forms\MainForm.cs">
@@ -73,6 +75,7 @@
     <Compile Include="Models\KeyDefinition.cs" />
     <Compile Include="Models\Profile.cs" />
     <Compile Include="Models\RemapRule.cs" />
+    <Compile Include="Models\Settings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\MainForm.resx">

@@ -527,6 +527,7 @@
             // 
             // btnDeleteProfile
             // 
+            this.btnDeleteProfile.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDeleteProfile.Location = new System.Drawing.Point(199, 50);
             this.btnDeleteProfile.Name = "btnDeleteProfile";
             this.btnDeleteProfile.Size = new System.Drawing.Size(75, 23);
@@ -537,6 +538,7 @@
             // 
             // btnRenameProfile
             // 
+            this.btnRenameProfile.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnRenameProfile.Location = new System.Drawing.Point(93, 50);
             this.btnRenameProfile.Name = "btnRenameProfile";
             this.btnRenameProfile.Size = new System.Drawing.Size(100, 23);
@@ -547,6 +549,7 @@
             // 
             // btnNewProfile
             // 
+            this.btnNewProfile.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnNewProfile.Location = new System.Drawing.Point(11, 50);
             this.btnNewProfile.Name = "btnNewProfile";
             this.btnNewProfile.Size = new System.Drawing.Size(75, 23);
@@ -557,6 +560,7 @@
             // 
             // cmbProfiles
             // 
+            this.cmbProfiles.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmbProfiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbProfiles.FormattingEnabled = true;
             this.cmbProfiles.Location = new System.Drawing.Point(93, 7);
@@ -572,7 +576,7 @@
             this.lblProfile.Name = "lblProfile";
             this.lblProfile.Size = new System.Drawing.Size(79, 16);
             this.lblProfile.TabIndex = 0;
-            this.lblProfile.Text = "Perfil activo:";
+            this.lblProfile.Text = "Perfil actual:";
             this.lblProfile.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MainForm

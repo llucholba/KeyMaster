@@ -14,7 +14,6 @@ namespace KeyMaster
 
         private RemapManager _remapManager;
 
-        //private readonly List<HotkeyAction> _hotkeys = new List<HotkeyAction>();
         private List<HotkeyAction> _hotkeys
         {
             get
@@ -28,6 +27,8 @@ namespace KeyMaster
 
         private ProfileManager _profileManager;
 
+        private bool _loadingProfileList;
+
         public MainForm()
         {
             InitializeComponent();
@@ -40,6 +41,10 @@ namespace KeyMaster
 
             _profileManager = new ProfileManager();
             _remapManager = new RemapManager(_profileManager.ActiveProfile.Remaps);
+
+            RefreshRemapList();
+            RefreshHotkeyList();
+
             RefreshProfileList();
 
             _keyboardHook.ShouldSuppressKey += ShouldSuppressKey;
@@ -278,6 +283,8 @@ namespace KeyMaster
                 return;
             }
 
+            _profileManager.SaveProfile(_profileManager.ActiveProfile);
+
             RefreshRemapList();
 
             keyCaptureSource.Clear();
@@ -312,6 +319,8 @@ namespace KeyMaster
                 return;
 
             _remapManager.RemoveRule(rule.Source);
+
+            _profileManager.SaveProfile(_profileManager.ActiveProfile);
 
             RefreshRemapList();
         }
@@ -414,6 +423,8 @@ namespace KeyMaster
 
             _hotkeys.Add(hotkey);
 
+            _profileManager.SaveProfile(_profileManager.ActiveProfile);
+
             string hotkeyText = string.Join(
                 " + ",
                 hotkey.Keys.Select(
@@ -485,16 +496,27 @@ namespace KeyMaster
 
             _hotkeys.RemoveAt(index);
 
+            _profileManager.SaveProfile(_profileManager.ActiveProfile);
+
             dgvHotkeys.Rows.RemoveAt(index);
         }
 
         private void RefreshProfileList()
         {
-            cmbProfiles.DataSource = null;
-            cmbProfiles.DataSource = _profileManager.Profiles;
-            cmbProfiles.DisplayMember = "Name";
+            _loadingProfileList = true;
 
-            cmbProfiles.SelectedItem = _profileManager.ActiveProfile;
+            try
+            {
+                cmbProfiles.DataSource = null;
+                cmbProfiles.DataSource = _profileManager.Profiles;
+                cmbProfiles.DisplayMember = "Name";
+
+                cmbProfiles.SelectedItem = _profileManager.ActiveProfile;
+            }
+            finally
+            {
+                _loadingProfileList = false;
+            }
         }
 
         private void btnNewProfile_Click(object sender, EventArgs e)
@@ -530,6 +552,8 @@ namespace KeyMaster
 
             _profileManager.Profiles.Add(profile);
 
+            _profileManager.SaveProfile(profile);
+
             RefreshProfileList();
         }
 
@@ -547,22 +571,19 @@ namespace KeyMaster
 
             name = name.Trim();
 
-            if (_profileManager.Profiles.Any(
-                p => p != profile &&
-                     p.Name.Equals(
-                         name,
-                         StringComparison.OrdinalIgnoreCase)))
+            if (!_profileManager.RenameProfile(
+                profile,
+                name))
             {
                 MessageBox.Show(
-                    "Ya existe un perfil con ese nombre.",
+                    "No se pudo renombrar el perfil.\n\n" +
+                    "Es posible que ya exista otro perfil con ese nombre.",
                     "Perfil",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
 
                 return;
             }
-
-            profile.Name = name;
 
             RefreshProfileList();
         }
@@ -593,11 +614,9 @@ namespace KeyMaster
             if (result != DialogResult.Yes)
                 return;
 
-            _profileManager.Profiles.Remove(profile);
+            _profileManager.DeleteProfile(profile);
 
-            Profile newActiveProfile = _profileManager.Profiles[0];
-
-            _profileManager.SetActiveProfile(newActiveProfile);
+            ChangeActiveProfile(_profileManager.ActiveProfile);
 
             RefreshProfileList();
         }
@@ -608,6 +627,8 @@ namespace KeyMaster
                 return;
 
             _profileManager.SetActiveProfile(profile);
+
+            _profileManager.SaveActiveProfileSetting();
 
             _remapManager.SetRules(profile.Remaps);
 
@@ -643,6 +664,9 @@ namespace KeyMaster
 
         private void cmbProfiles_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (_loadingProfileList)
+                return;
+
             if (cmbProfiles.SelectedItem == null)
                 return;
 
