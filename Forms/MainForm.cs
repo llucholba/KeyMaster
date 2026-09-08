@@ -806,7 +806,47 @@ namespace KeyMaster
 
         private void btnExportAllProfiles_Click(object sender, EventArgs e)
         {
+            if (_profileManager.Profiles.Count == 0)
+                return;
 
+            using (SaveFileDialog dialog = new SaveFileDialog())
+            {
+                dialog.Title = "Exportar todos los perfiles";
+
+                dialog.Filter = "Respaldo de KeyMaster (*.json)|*.json";
+
+                dialog.FileName = "KeyMaster_Backup.json";
+
+                dialog.AddExtension = true;
+                dialog.DefaultExt = "json";
+
+                if (dialog.ShowDialog() != DialogResult.OK)
+                    return;
+
+                try
+                {
+                    ProfileStorage storage = new ProfileStorage();
+
+                    storage.ExportAllProfiles(
+                        _profileManager.Profiles,
+                        dialog.FileName);
+
+                    MessageBox.Show(
+                        "Todos los perfiles fueron exportados correctamente.",
+                        "Exportar perfiles",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        "No se pudieron exportar los perfiles.\n\n" +
+                        ex.Message,
+                        "Exportar perfiles",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void btnImportAllProfiles_Click(object sender, EventArgs e)

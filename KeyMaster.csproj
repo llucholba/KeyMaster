@@ -74,6 +74,7 @@
     <Compile Include="Models\KeyboardEvent.cs" />
     <Compile Include="Models\KeyDefinition.cs" />
     <Compile Include="Models\Profile.cs" />
+    <Compile Include="Models\ProfilePackage.cs" />
     <Compile Include="Models\RemapRule.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Program.cs" />

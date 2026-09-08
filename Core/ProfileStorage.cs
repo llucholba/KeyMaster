@@ -115,6 +115,30 @@ namespace KeyMaster.Core
                 Encoding.UTF8);
         }
 
+        public void ExportAllProfiles(List<Profile> profiles, string filePath)
+        {
+            if (profiles == null)
+                return;
+
+            if (string.IsNullOrWhiteSpace(filePath))
+                return;
+
+            ProfilePackage package = new ProfilePackage
+            {
+                FormatVersion = 1,
+                Profiles = profiles
+            };
+
+            var serializer = new JavaScriptSerializer();
+
+            string json = serializer.Serialize(package);
+
+            File.WriteAllText(
+                filePath,
+                json,
+                Encoding.UTF8);
+        }
+
         public Profile ImportProfile(string filePath)
         {
             if (string.IsNullOrWhiteSpace(filePath))
